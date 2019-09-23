@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import controller.ToolbarListener;
+
 public class Toolbar extends JPanel implements ActionListener
 {
 	private JButton addPlayerButton;

@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import controller.AddPlayerListener;
+
 public class AddPlayerPanel extends JPanel 
 {
 	private JLabel idLabel; 
@@ -50,13 +52,11 @@ public class AddPlayerPanel extends JPanel
 			{
 				String id = idField.getText();
 				String name = nameField.getText();
-				String points = pointsField.getText();
-				
-				AddPlayerEvent ev = new AddPlayerEvent(this, id, name, points);
+				int points = Integer.parseInt(pointsField.getText());
 				
 				if (addPlayerListener != null)
 				{
-					addPlayerListener.addPlayerEventOccurred(ev);
+					addPlayerListener.addPlayerEventOccurred(id, name, points);
 				}
 			}	
 		});

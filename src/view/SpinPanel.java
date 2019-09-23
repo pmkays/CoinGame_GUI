@@ -14,16 +14,16 @@ import javax.swing.border.Border;
 import controller.RemoveBetPanelListener;
 import model.interfaces.Player;
 
-public class RemoveBetPanel extends JPanel 
+public class SpinPanel extends JPanel 
 {
 	private JLabel idLabel; 
 	private JComboBox<String> playersCombo;
-	private JButton removeButton;
+	private JButton spinButton;
 	private DefaultComboBoxModel<String> playersModel;
 
-	private RemoveBetPanelListener removeBetPanelListener;
+	private SpinPanelListener spinPanelListener;
 	 
-	public RemoveBetPanel()
+	public SpinPanel()
 	{
 		Dimension dim = getPreferredSize();
 		dim.width = 250;
@@ -40,18 +40,18 @@ public class RemoveBetPanel extends JPanel
 		playersCombo.setBorder(BorderFactory.createEtchedBorder());
 		
 		//set up individual components
-		removeButton = new JButton("Remove");
+		spinButton = new JButton("Spin");
 		
 
-		removeButton.addActionListener(new ActionListener()
+		spinButton.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
 				String id = (String) playersCombo.getSelectedItem();
-				if (removeBetPanelListener != null)
+				if (spinPanelListener != null)
 				{
-					removeBetPanelListener.removeBetPanelEventOccurred(id);
+					spinPanelListener.spinPanelEventOccurred(id);
 				}
 			}	
 		});
@@ -85,12 +85,12 @@ public class RemoveBetPanel extends JPanel
 		gc.weighty = 2;
 		
 		gc.gridx = 1;
-		add(removeButton, gc);
+		add(spinButton, gc);
 	}
 
-	public void setRemoveBetPanelListener(RemoveBetPanelListener removeBetPanelListener) 
+	public void setSpinPanelListener(SpinPanelListener spinPanelListener) 
 	{
-		this.removeBetPanelListener = removeBetPanelListener;
+		this.spinPanelListener = spinPanelListener;
 	}
 	
 	public void showPlayers(Collection<Player> players)
@@ -108,7 +108,6 @@ public class RemoveBetPanel extends JPanel
 		{
 			playersModel.addElement("No players added");
 		}
-
 	}
 
 

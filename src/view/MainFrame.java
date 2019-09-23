@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,143 +9,65 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
-import controller.Controller;
+import controller.AddPlayerListener;
+import controller.PlaceBetPanelListener;
+import controller.RemoveBetPanelListener;
+import controller.RemovePlayerListener;
+import controller.ToolbarListener;
+//import controller.Controller;
+import model.GameEngineImpl;
 
 public class MainFrame extends JFrame
 {
-	private JPanel coinPanel;
+	private SpinPanel coinPanel;
 	private Toolbar toolbar;
 	private AddPlayerPanel addPlayerPanel;
 	private RemovePlayerPanel removePlayerPanel;
 	private PlaceBetPanel placeBetPanel;
 	private RemoveBetPanel removeBetPanel;
-	private Controller controller;
+	private SpinPanel spinPanel;
+	private GameEngineImpl gameEngine;
 	
 	public MainFrame()
 	{
 		super("Coin Game");
 		
 		setLayout(new BorderLayout());
-		
-		coinPanel = new JPanel(); 
+		gameEngine = new GameEngineImpl();
 		toolbar = new Toolbar();
-		controller = new Controller();
 		
 		addPlayerPanel = new AddPlayerPanel();
 		removePlayerPanel = new RemovePlayerPanel();
 		placeBetPanel = new PlaceBetPanel();
 		removeBetPanel = new RemoveBetPanel();
+		spinPanel = new SpinPanel();
 		
 		//set all panels to invisible initially
 		addPlayerPanel.setVisible(false);
 		removePlayerPanel.setVisible(false);
 		placeBetPanel.setVisible(false);
 		removeBetPanel.setVisible(false);
+		spinPanel.setVisible(false);
 		
 		setJMenuBar(createMenuBar());
 		
-		toolbar.setToolbarListener(new ToolbarListener()
-		{
-
-			@Override
-			public void toolbarEventOccurred(JButton button) 
-			{
-				if(button == toolbar.getAddPlayerButton())
-				{
-					add(addPlayerPanel, BorderLayout.EAST);
-					addPlayerPanel.setVisible(true);
-					removePlayerPanel.setVisible(false);
-					placeBetPanel.setVisible(false);
-					removeBetPanel.setVisible(false);
-				}
-				else if (button == toolbar.getRemovePlayerButton())
-				{
-					add(removePlayerPanel, BorderLayout.EAST);
-					removePlayerPanel.setVisible(true);
-					addPlayerPanel.setVisible(false);
-					placeBetPanel.setVisible(false);
-					removeBetPanel.setVisible(false);
-					removePlayerPanel.showPlayers(controller.getPlayers());
-				}
-				else if (button == toolbar.getPlaceBetButton())
-				{
-					add(placeBetPanel, BorderLayout.EAST);
-					placeBetPanel.setVisible(true);
-					removePlayerPanel.setVisible(false);
-					addPlayerPanel.setVisible(false);
-					removeBetPanel.setVisible(false);
-					placeBetPanel.showPlayers(controller.getPlayers());	
-				}
-				else if (button == toolbar.getRemoveBetButton())
-				{
-					add(removeBetPanel, BorderLayout.EAST);
-					removeBetPanel.setVisible(true);
-					placeBetPanel.setVisible(false);
-					removePlayerPanel.setVisible(false);
-					addPlayerPanel.setVisible(false);
-					removeBetPanel.showPlayers(controller.getPlayers());					
-				}
-			}
-		});
+		ToolbarListener toolbarListener = new ToolbarListener(toolbar, gameEngine, MainFrame.this);
+		toolbar.setToolbarListener(toolbarListener);
 		
-		addPlayerPanel.setAddPlayerListener(new AddPlayerListener()
-		{
-
-			@Override
-			public void addPlayerEventOccurred(AddPlayerEvent e) 
-			{
-				controller.addPlayer(e);
-				JOptionPane.showMessageDialog(MainFrame.this,
-				        "Player: " + e.getId() + " added successfully", "Player Added",
-				        JOptionPane.INFORMATION_MESSAGE);
-			}
-		});
+		AddPlayerListener addPlayerListener = new AddPlayerListener(gameEngine, MainFrame.this);
+		addPlayerPanel.setAddPlayerListener(addPlayerListener);
 		
-		removePlayerPanel.setRemovePlayerListener(new RemovePlayerListener() 
-		{
-			@Override
-			public void removePlayerEventOccurred(String id) 
-			{
-				controller.removePlayer(id);
-				if(!id.equals("No players added") || !id.isEmpty()) //slight bug if not refreshed
-				{
-					JOptionPane.showMessageDialog(MainFrame.this,
-					        "Player: " + id + " removed successfully", "Player Removed",
-					        JOptionPane.INFORMATION_MESSAGE);	
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(MainFrame.this,
-					        "No players to remove", "Player Removed",
-					        JOptionPane.INFORMATION_MESSAGE);
-				}
-			}
-		});
+		RemovePlayerListener removePlayerListener = new RemovePlayerListener(gameEngine, MainFrame.this);
+		removePlayerPanel.setRemovePlayerListener(removePlayerListener);
 		
-		placeBetPanel.setPlaceBetPanelListener(new PlaceBetPanelListener() 
-		{
-			@Override
-			public void placeBetPanelEventOccurred(PlaceBetPanelEvent e) 
-			{
-				controller.placeBet(e);
-				JOptionPane.showMessageDialog(MainFrame.this,
-				        "Bet successfully placed for Player:"  + e.getId(), "Bet Placed",
-				        JOptionPane.INFORMATION_MESSAGE);
-			}
-				
-		});
+		PlaceBetPanelListener placeBetPanelListener = new PlaceBetPanelListener(gameEngine, MainFrame.this);
+		placeBetPanel.setPlaceBetPanelListener(placeBetPanelListener);
 		
-		removeBetPanel.setRemoveBetPanelListener(new RemoveBetPanelListener() 
-		{
-			@Override
-			public void removeBetPanelEventOccurred(String id) 
-			{
-				controller.removeBet(id);
-				JOptionPane.showMessageDialog(MainFrame.this,
-				        "Bet successfully removed for Player:"  + id, "Bet Placed",
-				        JOptionPane.INFORMATION_MESSAGE);	
-			}
-		});
+		RemoveBetPanelListener removeBetPanelListener = new RemoveBetPanelListener(gameEngine, MainFrame.this);
+		removeBetPanel.setRemoveBetPanelListener(removeBetPanelListener);
+		
+		SpinPanelListener spinPanelListener = new SpinPanelListener(gameEngine, MainFrame.this);
+		spinPanel.setSpinPanelListener(spinPanelListener);
 		
 		
 		add(coinPanel, BorderLayout.CENTER);
@@ -156,6 +79,46 @@ public class MainFrame extends JFrame
 		setVisible(true);
 	}
 	
+	public JPanel getCoinPanel() 
+	{
+		return coinPanel;
+	}
+
+	public Toolbar getToolbar() 
+	{
+		return toolbar;
+	}
+
+	public AddPlayerPanel getAddPlayerPanel() 
+	{
+		return addPlayerPanel;
+	}
+
+	public RemovePlayerPanel getRemovePlayerPanel() 
+	{
+		return removePlayerPanel;
+	}
+
+	public PlaceBetPanel getPlaceBetPanel() 
+	{
+		return placeBetPanel;
+	}
+
+	public RemoveBetPanel getRemoveBetPanel() 
+	{
+		return removeBetPanel;
+	}
+
+	public GameEngineImpl getGameEngine() 
+	{
+		return gameEngine;
+	}
+
+	public SpinPanel getSpinPanel() 
+	{
+		return spinPanel;
+	}
+
 	private JMenuBar createMenuBar()
 	{
 		JMenuBar menuBar= new JMenuBar(); 
@@ -212,4 +175,5 @@ public class MainFrame extends JFrame
 		
 		return menuBar;
 	}
+
 }

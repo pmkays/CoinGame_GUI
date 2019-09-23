@@ -11,6 +11,7 @@ import java.util.Collection;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import controller.RemovePlayerListener;
 import model.GameEngineImpl;
 import model.interfaces.Player;
 

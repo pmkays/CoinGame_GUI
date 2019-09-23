@@ -11,6 +11,7 @@ import java.util.Collection;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import controller.PlaceBetPanelListener;
 import model.interfaces.Player;
 
 public class PlaceBetPanel extends JPanel 
@@ -59,20 +60,17 @@ public class PlaceBetPanel extends JPanel
 		betTypeCombo.setModel(betTypeModel);
 		betTypeCombo.setBorder(BorderFactory.createEtchedBorder());
 
-		
-
 		betButton.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
 				String id = (String) playersCombo.getSelectedItem();
-				String bet = betField.getText();
+				int bet = Integer.parseInt(betField.getText());
 				String betType = (String) betTypeCombo.getSelectedItem();
-				PlaceBetPanelEvent ev = new PlaceBetPanelEvent(this, id, bet, betType);
 				if (placeBetPanelListener != null)
 				{
-					placeBetPanelListener.placeBetPanelEventOccurred(ev);
+					placeBetPanelListener.placeBetPanelEventOccurred(id, bet, betType);
 					
 				}
 			}	
