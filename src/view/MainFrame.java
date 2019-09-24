@@ -16,24 +16,27 @@ import controller.RemovePlayerListener;
 import controller.ToolbarListener;
 //import controller.Controller;
 import model.GameEngineImpl;
+import model.interfaces.GameEngine;
 
 public class MainFrame extends JFrame
 {
-	private SpinPanel coinPanel;
 	private Toolbar toolbar;
 	private AddPlayerPanel addPlayerPanel;
 	private RemovePlayerPanel removePlayerPanel;
 	private PlaceBetPanel placeBetPanel;
 	private RemoveBetPanel removeBetPanel;
 	private SpinPanel spinPanel;
+	private CoinPanel coinPanel;
+	private SummaryPanel summaryPanel;
 	private GameEngineImpl gameEngine;
 	
-	public MainFrame()
+	public MainFrame(GameEngineImpl gameEngine)
 	{
 		super("Coin Game");
-		
+
+
 		setLayout(new BorderLayout());
-		gameEngine = new GameEngineImpl();
+		this.gameEngine = gameEngine;
 		toolbar = new Toolbar();
 		
 		addPlayerPanel = new AddPlayerPanel();
@@ -41,8 +44,10 @@ public class MainFrame extends JFrame
 		placeBetPanel = new PlaceBetPanel();
 		removeBetPanel = new RemoveBetPanel();
 		spinPanel = new SpinPanel();
+		coinPanel = new CoinPanel();
+		summaryPanel = new SummaryPanel(); 
 		
-		//set all panels to invisible initially
+		//set all side panels to invisible initially
 		addPlayerPanel.setVisible(false);
 		removePlayerPanel.setVisible(false);
 		placeBetPanel.setVisible(false);
@@ -72,6 +77,7 @@ public class MainFrame extends JFrame
 		
 		add(coinPanel, BorderLayout.CENTER);
 		add(toolbar, BorderLayout.NORTH);
+		add(summaryPanel, BorderLayout.SOUTH);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMinimumSize (new Dimension(650, 450));
@@ -79,7 +85,7 @@ public class MainFrame extends JFrame
 		setVisible(true);
 	}
 	
-	public JPanel getCoinPanel() 
+	public CoinPanel getCoinPanel() 
 	{
 		return coinPanel;
 	}

@@ -11,39 +11,49 @@ import model.interfaces.Player;
 
 public class CoinPanel extends JPanel
 {
-	private JLabel heads = new JLabel(new ImageIcon(""));
-	private JLabel tails = new JLabel(new ImageIcon(""));
+	private ImageIcon heads = new ImageIcon("heads.png");
+	private ImageIcon tails = new ImageIcon("tails.png");
 	
-	private JLabel[] coin1 = {heads, tails};
-	private JLabel[] coin2 = {heads, tails};
+	private JLabel face1 = new JLabel(heads);
+	private JLabel face2 = new JLabel(tails);
 	
 	private GameEngineImpl gameEngine;
 	private Player player;
 	
-	public CoinPanel(Player spinPlayer, GameEngineImpl gameEngine)
+	public CoinPanel()
 	{
-		this.player = spinPlayer;
-		this.gameEngine = gameEngine;
 		setLayout(new BorderLayout());
-		
-		if(player.getResult().getCoin1().getFace() == CoinFace.HEADS)
-		{
-			add(heads, BorderLayout.WEST);
-		}
-		else if (player.getResult().getCoin1().getFace() == CoinFace.TAILS)
-		{
-			//disable the other one first
-			add(tails, BorderLayout.WEST);
-		}
-		
-		if(player.getResult().getCoin2().getFace() == CoinFace.HEADS)
-		{
-			add(heads, BorderLayout.EAST);
-		}
-		else if (player.getResult().getCoin2().getFace() == CoinFace.TAILS)
-		{
-			//disable the other one first
-			add(tails, BorderLayout.EAST);
-		}
+//		face1.setIcon(heads);
+//		face2.setIcon(heads);
+		add(face1, BorderLayout.WEST);
+		add(face2, BorderLayout.EAST);
+	}
+	
+	public void setFace1Heads()
+	{
+		face1.setIcon(heads);
+		face1.repaint(); 
+		face1.revalidate();
+	}
+	
+	public void setFace1Tails()
+	{
+		face1.setIcon(tails);
+		face1.repaint(); 
+		face1.revalidate();
+	}
+	
+	public void setFace2Heads()
+	{
+		face2.setIcon(heads);
+		face2.repaint(); 
+		face2.revalidate();
+	}
+	
+	public void setFace2Tails()
+	{
+		face2.setIcon(tails);
+		face2.repaint(); 
+		face2.revalidate();
 	}
 }

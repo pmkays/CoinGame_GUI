@@ -80,11 +80,11 @@ public class ToolbarListener
 		{
 			mainFrame.add(spinPanel, BorderLayout.EAST);
 			spinPanel.setVisible(true);
-			removeBetPanel.setVisible(true);
+			removeBetPanel.setVisible(false);
 			placeBetPanel.setVisible(false);
 			removePlayerPanel.setVisible(false);
 			addPlayerPanel.setVisible(false);
-			removeBetPanel.showPlayers(gameEngine.getAllPlayers());					
+			spinPanel.showPlayers(gameEngine.getAllPlayers());					
 		}
 		
 	}

@@ -28,7 +28,7 @@ public class SpinPanel extends JPanel
 		Dimension dim = getPreferredSize();
 		dim.width = 250;
 		setPreferredSize(dim);
-		Border innerBorder = BorderFactory.createTitledBorder("Remove Bet");
+		Border innerBorder = BorderFactory.createTitledBorder("Spin Player");
 		Border outerBorder = BorderFactory.createEmptyBorder(5,5,5,5);
 		setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
 		
