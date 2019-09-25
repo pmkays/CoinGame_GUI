@@ -2,6 +2,8 @@ package view;
 
 import java.awt.BorderLayout;
 
+
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +17,6 @@ import controller.RemoveBetPanelListener;
 import controller.RemovePlayerListener;
 import controller.ToolbarListener;
 //import controller.Controller;
-import model.GameEngineImpl;
 import model.interfaces.GameEngine;
 
 public class MainFrame extends JFrame
@@ -28,9 +29,9 @@ public class MainFrame extends JFrame
 	private SpinPanel spinPanel;
 	private CoinPanel coinPanel;
 	private SummaryPanel summaryPanel;
-	private GameEngineImpl gameEngine;
+	private GameEngine gameEngine;
 	
-	public MainFrame(GameEngineImpl gameEngine)
+	public MainFrame(GameEngine gameEngine)
 	{
 		super("Coin Game");
 
@@ -45,7 +46,7 @@ public class MainFrame extends JFrame
 		removeBetPanel = new RemoveBetPanel();
 		spinPanel = new SpinPanel();
 		coinPanel = new CoinPanel();
-		summaryPanel = new SummaryPanel(); 
+		summaryPanel = new SummaryPanel(gameEngine); 
 		
 		//set all side panels to invisible initially
 		addPlayerPanel.setVisible(false);
@@ -59,19 +60,19 @@ public class MainFrame extends JFrame
 		ToolbarListener toolbarListener = new ToolbarListener(toolbar, gameEngine, MainFrame.this);
 		toolbar.setToolbarListener(toolbarListener);
 		
-		AddPlayerListener addPlayerListener = new AddPlayerListener(gameEngine, MainFrame.this);
+		AddPlayerListener addPlayerListener = new AddPlayerListener(gameEngine, MainFrame.this, summaryPanel);
 		addPlayerPanel.setAddPlayerListener(addPlayerListener);
 		
-		RemovePlayerListener removePlayerListener = new RemovePlayerListener(gameEngine, MainFrame.this);
+		RemovePlayerListener removePlayerListener = new RemovePlayerListener(gameEngine, MainFrame.this, summaryPanel);
 		removePlayerPanel.setRemovePlayerListener(removePlayerListener);
 		
-		PlaceBetPanelListener placeBetPanelListener = new PlaceBetPanelListener(gameEngine, MainFrame.this);
+		PlaceBetPanelListener placeBetPanelListener = new PlaceBetPanelListener(gameEngine, MainFrame.this, summaryPanel);
 		placeBetPanel.setPlaceBetPanelListener(placeBetPanelListener);
 		
-		RemoveBetPanelListener removeBetPanelListener = new RemoveBetPanelListener(gameEngine, MainFrame.this);
+		RemoveBetPanelListener removeBetPanelListener = new RemoveBetPanelListener(gameEngine, MainFrame.this, summaryPanel);
 		removeBetPanel.setRemoveBetPanelListener(removeBetPanelListener);
 		
-		SpinPanelListener spinPanelListener = new SpinPanelListener(gameEngine, MainFrame.this);
+		SpinPanelListener spinPanelListener = new SpinPanelListener(gameEngine, MainFrame.this, summaryPanel);
 		spinPanel.setSpinPanelListener(spinPanelListener);
 		
 		
@@ -115,7 +116,7 @@ public class MainFrame extends JFrame
 		return removeBetPanel;
 	}
 
-	public GameEngineImpl getGameEngine() 
+	public GameEngine getGameEngine() 
 	{
 		return gameEngine;
 	}

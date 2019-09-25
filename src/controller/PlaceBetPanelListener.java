@@ -2,22 +2,26 @@ package controller;
 
 import java.util.EventListener;
 
+
 import javax.swing.JOptionPane;
 
-import model.GameEngineImpl;
+import model.interfaces.GameEngine;
 import model.enumeration.BetType;
 import model.interfaces.Player;
 import view.MainFrame;
+import view.SummaryPanel;
 
 public class PlaceBetPanelListener
 {
-	private GameEngineImpl gameEngine;
+	private GameEngine gameEngine;
 	private MainFrame mainFrame;
+	private SummaryPanel summaryPanel;
 	
-	public PlaceBetPanelListener(GameEngineImpl gameEngine, MainFrame mainFrame) 
+	public PlaceBetPanelListener(GameEngine gameEngine, MainFrame mainFrame, SummaryPanel summaryPanel) 
 	{
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
+		this.summaryPanel = summaryPanel;
 	}
 
 	public void placeBetPanelEventOccurred(String id, int bet, String betTypeString)
@@ -47,6 +51,7 @@ public class PlaceBetPanelListener
 		JOptionPane.showMessageDialog(mainFrame,
 		        "Bet successfully placed for Player:"  + id, "Bet Placed",
 		        JOptionPane.INFORMATION_MESSAGE);
+		summaryPanel.updatePanel();
 	}
 
 }

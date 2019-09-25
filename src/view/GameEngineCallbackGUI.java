@@ -2,14 +2,14 @@ package view;
 
 import java.awt.BorderLayout;
 
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import model.GameEngineImpl;
+import model.interfaces.GameEngine;
 import model.enumeration.CoinFace;
 import model.interfaces.Coin;
 import model.interfaces.CoinPair;
-import model.interfaces.GameEngine;
 import model.interfaces.Player;
 import view.interfaces.GameEngineCallback;
 
@@ -27,7 +27,7 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 			
 
 	
-	public GameEngineCallbackGUI(GameEngineImpl gameEngine)
+	public GameEngineCallbackGUI(GameEngine gameEngine)
 	{
 		this.mainFrame = new MainFrame(gameEngine); 
 		this.gameEngine = gameEngine;
@@ -36,6 +36,30 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 	
 	@Override
 	public void playerCoinUpdate(Player player, Coin coin, GameEngine engine)
+	{
+		coinFlip(coin);
+	}
+	
+	@Override
+	public void playerResult(Player player, CoinPair coinPair, GameEngine engine)
+	{
+		
+	}
+
+	@Override
+	public void spinnerCoinUpdate(Coin coin, GameEngine engine) 
+	{
+		coinFlip(coin);
+	}
+
+	@Override
+	public void spinnerResult(CoinPair coinPair, GameEngine engine) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private void coinFlip(Coin coin)
 	{
 		if(coin.getFace() == CoinFace.HEADS && coin.getNumber() == 1)
 		{
@@ -58,36 +82,4 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 			coinPanel.setFace2Tails();
 		}
 	}
-	
-	@Override
-	public void playerResult(Player player, CoinPair coinPair, GameEngine engine)
-	{
-		
-	}
-
-	@Override
-	public void spinnerCoinUpdate(Coin coin, GameEngine engine) 
-	{
-//		coin1Flip(coin);
-//		coin2Flip(coin);
-		
-	}
-
-	@Override
-	public void spinnerResult(CoinPair coinPair, GameEngine engine) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-	
-	private void coin1Flip(Coin coin)
-	{
-		
-	}
-	
-	private void coin2Flip(Coin coin)
-	{
-		
-	}
-
 }

@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 
 import model.GameEngineImpl;
 import model.interfaces.GameEngine;
+import view.interfaces.GameEngineCallback;
 
 public class App {
 
@@ -14,8 +15,8 @@ public class App {
 			@Override
 			public void run() 
 			{
-				GameEngineImpl gameEngine = new GameEngineImpl();			
-				GameEngineCallbackGUI engineCallbackGUI = new GameEngineCallbackGUI(gameEngine);
+				GameEngine gameEngine = new GameEngineImpl();			
+				GameEngineCallback engineCallbackGUI = new GameEngineCallbackGUI(gameEngine);
 				gameEngine.addGameEngineCallback(engineCallbackGUI);
 
 			}

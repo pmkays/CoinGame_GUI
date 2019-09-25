@@ -1,13 +1,14 @@
 package controller;
 
 import java.awt.BorderLayout;
+
 import java.awt.event.ActionEvent;
 import java.util.EventListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import model.GameEngineImpl;
+import model.interfaces.GameEngine;
 import view.AddPlayerPanel;
 import view.MainFrame;
 import view.PlaceBetPanel;
@@ -19,10 +20,10 @@ import view.Toolbar;
 public class ToolbarListener
 {
 	private Toolbar toolbar;
-	private GameEngineImpl gameEngine;
+	private GameEngine gameEngine;
 	private MainFrame mainFrame; 
 	
-	public ToolbarListener(Toolbar toolbar, GameEngineImpl gameEngine, MainFrame mainFrame)
+	public ToolbarListener(Toolbar toolbar, GameEngine gameEngine, MainFrame mainFrame)
 	{
 		this.toolbar = toolbar;
 		this.gameEngine = gameEngine;

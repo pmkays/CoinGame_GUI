@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Dimension;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -12,7 +13,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import controller.RemovePlayerListener;
-import model.GameEngineImpl;
 import model.interfaces.Player;
 
 public class RemovePlayerPanel extends JPanel 

@@ -2,21 +2,25 @@ package controller;
 
 import java.util.Collection;
 
+
 import javax.swing.JOptionPane;
 
-import model.GameEngineImpl;
+import model.interfaces.GameEngine;
 import model.interfaces.Player;
 import view.MainFrame;
+import view.SummaryPanel;
 
 public class RemovePlayerListener
 {
-	private GameEngineImpl gameEngine;
+	private GameEngine gameEngine;
 	private MainFrame mainFrame;
+	private SummaryPanel summaryPanel;
 	
-	public RemovePlayerListener(GameEngineImpl gameEngine, MainFrame frame)
+	public RemovePlayerListener(GameEngine gameEngine, MainFrame frame, SummaryPanel summaryPanel)
 	{
 		this.gameEngine = gameEngine;
 		this.mainFrame = frame;
+		this.summaryPanel = summaryPanel;
 	}
 	
 	public void removePlayerEventOccurred(String id) 
@@ -39,6 +43,7 @@ public class RemovePlayerListener
 			JOptionPane.showMessageDialog(mainFrame,
 			        "Player: " + id + " removed successfully", "Player Removed",
 			        JOptionPane.INFORMATION_MESSAGE);	
+			summaryPanel.updatePanel();
 		}
 		else
 		{

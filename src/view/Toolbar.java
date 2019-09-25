@@ -26,8 +26,8 @@ public class Toolbar extends JPanel implements ActionListener
 		removePlayerButton = new JButton("Remove Player");
 		placeBetButton = new JButton("Place Bet");
 		removeBetButton = new JButton("Remove Bet");
-		spinButton = new JButton("Spin"); 
-		summaryButton = new JButton("Summary");
+		spinButton = new JButton("Spin Player"); 
+		summaryButton = new JButton("Spin Spinner");
 		
 		addPlayerButton.addActionListener(this);
 		removePlayerButton.addActionListener(this);
