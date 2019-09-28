@@ -15,20 +15,23 @@ public class RemovePlayerListener
 	private GameEngine gameEngine;
 	private MainFrame mainFrame;
 	private SummaryPanel summaryPanel;
+
 	
 	public RemovePlayerListener(GameEngine gameEngine, MainFrame frame, SummaryPanel summaryPanel)
 	{
 		this.gameEngine = gameEngine;
 		this.mainFrame = frame;
-		this.summaryPanel = summaryPanel;
+		this.summaryPanel = summaryPanel; 
 	}
 	
 	public void removePlayerEventOccurred(String id) 
 	{
+		int playerCount = 0;
 		Collection<Player> players = gameEngine.getAllPlayers();
 		Player toDelete = null;
 		for(Player player : players)
 		{
+			playerCount++; 
 			if(player.getPlayerId().equals(id))
 			{
 				toDelete = player;
@@ -44,6 +47,8 @@ public class RemovePlayerListener
 			        "Player: " + id + " removed successfully", "Player Removed",
 			        JOptionPane.INFORMATION_MESSAGE);	
 			summaryPanel.updatePanel();
+			playerCount--;
+			summaryPanel.updatePlayerCount(playerCount); 
 		}
 		else
 		{

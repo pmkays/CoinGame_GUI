@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import java.util.Collection;
@@ -7,6 +8,7 @@ import java.util.Collection;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 
 import model.interfaces.GameEngine;
@@ -16,8 +18,10 @@ public class SummaryPanel extends JPanel
 {
 	private GameEngine gameEngine;
 	JLabel displayUpdates;
-	public SummaryPanel(GameEngine gameEngine)
+	private StatusBarPanel statusBarPanel;
+	public SummaryPanel(GameEngine gameEngine, StatusBarPanel statusBarPanel)
 	{
+		this.statusBarPanel = statusBarPanel;
 		Dimension dim = getPreferredSize();
 		dim.height = 150;
 		setPreferredSize(dim);
@@ -29,7 +33,10 @@ public class SummaryPanel extends JPanel
 		
 
 		displayUpdates = new JLabel("");
-		add(displayUpdates);
+		
+		setLayout(new BorderLayout());
+		add(new JScrollPane(displayUpdates), BorderLayout.CENTER);
+		add(statusBarPanel, BorderLayout.SOUTH); 
 	}
 	
 	public void updatePanel()
@@ -44,6 +51,16 @@ public class SummaryPanel extends JPanel
 		displayUpdates.setText(playersDisplay);
 		this.repaint();
 		this.revalidate();
+	}
+	
+	public void updatePlayerCount(int count)
+	{
+		statusBarPanel.setplayerUpdateCount(count);
+	}
+	
+	public void updatePlayerStatus(String id)
+	{
+		statusBarPanel.setPlayerStatus(id);
 	}
 
 }

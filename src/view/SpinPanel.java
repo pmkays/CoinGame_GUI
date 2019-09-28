@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import controller.RemoveBetPanelListener;
+import controller.SpinPanelListener;
 import model.interfaces.Player;
 
 public class SpinPanel extends JPanel 

@@ -1,12 +1,18 @@
-package view;
+package controller;
 
 import java.awt.BorderLayout;
 
 
 import java.util.Collection;
 
+import javax.swing.JOptionPane;
+
+import model.enumeration.BetType;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
+import view.CoinPanel;
+import view.MainFrame;
+import view.SummaryPanel;
 
 public class SpinPanelListener 
 {
@@ -41,9 +47,21 @@ public class SpinPanelListener
 						spinPlayer = player;
 					}
 				}
-				//make sure player's bet isnt 0 bettype != no bet
-				gameEngine.spinPlayer(spinPlayer, 100, 1000, 100, 50, 500, 50);
+				summaryPanel.updatePlayerStatus(spinPlayer.getPlayerId());
+				
+				if(!(spinPlayer.getBetType() == BetType.NO_BET) && spinPlayer.getBet() > 0)
+				{
+					gameEngine.spinPlayer(spinPlayer, 100, 1000, 100, 50, 500, 50);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(mainFrame,
+					        "Please ensure that a bet has been placed for player: " 
+					+ spinPlayer.getPlayerId(), "Unable to spin",
+					        JOptionPane.ERROR_MESSAGE);
+				}
 				summaryPanel.updatePanel();
+				summaryPanel.updatePlayerStatus("");
 			}
 		}.start();
 	}

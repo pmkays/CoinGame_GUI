@@ -15,6 +15,7 @@ import controller.AddPlayerListener;
 import controller.PlaceBetPanelListener;
 import controller.RemoveBetPanelListener;
 import controller.RemovePlayerListener;
+import controller.SpinPanelListener;
 import controller.ToolbarListener;
 //import controller.Controller;
 import model.interfaces.GameEngine;
@@ -29,6 +30,7 @@ public class MainFrame extends JFrame
 	private SpinPanel spinPanel;
 	private CoinPanel coinPanel;
 	private SummaryPanel summaryPanel;
+	private StatusBarPanel statusBarPanel;
 	private GameEngine gameEngine;
 	
 	public MainFrame(GameEngine gameEngine)
@@ -46,14 +48,11 @@ public class MainFrame extends JFrame
 		removeBetPanel = new RemoveBetPanel();
 		spinPanel = new SpinPanel();
 		coinPanel = new CoinPanel();
-		summaryPanel = new SummaryPanel(gameEngine); 
+		statusBarPanel = new StatusBarPanel();
+		summaryPanel = new SummaryPanel(gameEngine, statusBarPanel); 
 		
 		//set all side panels to invisible initially
-		addPlayerPanel.setVisible(false);
-		removePlayerPanel.setVisible(false);
-		placeBetPanel.setVisible(false);
-		removeBetPanel.setVisible(false);
-		spinPanel.setVisible(false);
+		terminatePanels();
 		
 		setJMenuBar(createMenuBar());
 		
@@ -136,8 +135,8 @@ public class MainFrame extends JFrame
 		fileMenu.add(exitItem);
 		
 		JMenu windowMenu = new JMenu("Window");
-		JMenu showMenu = new JMenu("Show");
-		JMenuItem showFormItem = new JCheckBoxMenuItem("Person Form");
+		JMenu showMenu = new JMenu("Collapse Panels");
+		JMenuItem showFormItem = new JMenuItem("All");
 		showFormItem.setSelected(true);
 		showMenu.add(showFormItem);
 		windowMenu.add(showMenu);
@@ -150,8 +149,8 @@ public class MainFrame extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) e.getSource();	
-				addPlayerPanel.setVisible(menuItem.isSelected());
+//				JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) e.getSource();	
+				terminatePanels();
 			}
 		});
 		
@@ -180,7 +179,16 @@ public class MainFrame extends JFrame
 			}
 		});
 		
-		return menuBar;
+		return menuBar; 
+	}
+	
+	public void terminatePanels()
+	{
+		addPlayerPanel.setVisible(false);
+		removePlayerPanel.setVisible(false);
+		placeBetPanel.setVisible(false);
+		removeBetPanel.setVisible(false);
+		spinPanel.setVisible(false);
 	}
 
 }
