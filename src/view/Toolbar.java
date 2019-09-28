@@ -15,7 +15,6 @@ public class Toolbar extends JPanel implements ActionListener
 	private JButton placeBetButton;
 	private JButton removeBetButton; 
 	private JButton spinButton; 
-	private JButton summaryButton;
 	
 	private ToolbarListener toolbarListener;
 	
@@ -26,16 +25,13 @@ public class Toolbar extends JPanel implements ActionListener
 		removePlayerButton = new JButton("Remove Player");
 		placeBetButton = new JButton("Place Bet");
 		removeBetButton = new JButton("Remove Bet");
-		spinButton = new JButton("Spin Player"); 
-		summaryButton = new JButton("Spin Spinner");
+		spinButton = new JButton("Spin Coin"); 
 		
 		addPlayerButton.addActionListener(this);
 		removePlayerButton.addActionListener(this);
 		placeBetButton.addActionListener(this);
 		removeBetButton.addActionListener(this);
 		spinButton.addActionListener(this);
-		summaryButton.addActionListener(this);
-	
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT)); 
 		
@@ -44,7 +40,6 @@ public class Toolbar extends JPanel implements ActionListener
 		add(placeBetButton);
 		add(removeBetButton);
 		add(spinButton);
-		add(summaryButton);
 
 	}
 	
@@ -90,8 +85,4 @@ public class Toolbar extends JPanel implements ActionListener
 		return spinButton;
 	}
 
-	public JButton getSummaryButton() 
-	{
-		return summaryButton;
-	}
 }

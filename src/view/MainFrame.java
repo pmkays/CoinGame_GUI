@@ -80,8 +80,8 @@ public class MainFrame extends JFrame
 		add(summaryPanel, BorderLayout.SOUTH);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setMinimumSize (new Dimension(650, 450));
-		setSize(700, 500);
+		setMinimumSize (new Dimension(700, 500));
+		setSize(750, 550);
 		setVisible(true);
 	}
 	
@@ -123,6 +123,11 @@ public class MainFrame extends JFrame
 	public SpinPanel getSpinPanel() 
 	{
 		return spinPanel;
+	}
+	
+	public SummaryPanel getSummaryPanel() 
+	{
+		return this.summaryPanel;
 	}
 
 	private JMenuBar createMenuBar()

@@ -57,9 +57,9 @@ public class StatusBarPanel extends JPanel
 		}
 	}
 	
-	public void setSpinnerStatus(String spinning)
+	public void setSpinnerStatus(boolean spinning)
 	{
-		if(!spinning.isEmpty())
+		if(spinning)
 		{
 			status3.setText(status3Text + "spinning");
 		}

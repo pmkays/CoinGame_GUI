@@ -17,7 +17,8 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 {
 	private GameEngine gameEngine;
 	private CoinPanel coinPanel;
-	private MainFrame mainFrame; 
+	private MainFrame mainFrame;
+	private SummaryPanel summaryPanel;
 	
 //	private ImageIcon heads = new ImageIcon("heads.png");
 //	private ImageIcon tails = new ImageIcon("tails.png");
@@ -32,6 +33,7 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 		this.mainFrame = new MainFrame(gameEngine); 
 		this.gameEngine = gameEngine;
 		this.coinPanel = mainFrame.getCoinPanel();
+		this.summaryPanel = mainFrame.getSummaryPanel();
 	}
 	
 	@Override
@@ -43,7 +45,7 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 	@Override
 	public void playerResult(Player player, CoinPair coinPair, GameEngine engine)
 	{
-		
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -55,7 +57,6 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 	@Override
 	public void spinnerResult(CoinPair coinPair, GameEngine engine) 
 	{
-		// TODO Auto-generated method stub
 		
 	}
 	
@@ -63,22 +64,22 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 	{
 		if(coin.getFace() == CoinFace.HEADS && coin.getNumber() == 1)
 		{
-			System.out.println("coin1heads");
+//			System.out.println("coin1heads");
 			coinPanel.setFace1Heads();
 		}
 		else if (coin.getFace() == CoinFace.TAILS && coin.getNumber() == 1)
 		{
-			System.out.println("coin1tails");
+//			System.out.println("coin1tails");
 			coinPanel.setFace1Tails();
 		}			
 		else if(coin.getFace() == CoinFace.HEADS && coin.getNumber() == 2)
 		{
-			System.out.println("coin2heads");
+//			System.out.println("coin2heads");
 			coinPanel.setFace2Heads();
 		}
 		else if (coin.getFace() == CoinFace.TAILS && coin.getNumber() == 2)
 		{
-			System.out.println("coin2tails");
+//			System.out.println("coin2tails");
 			coinPanel.setFace2Tails();
 		}
 	}

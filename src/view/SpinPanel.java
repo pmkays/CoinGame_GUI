@@ -21,6 +21,7 @@ public class SpinPanel extends JPanel
 	private JComboBox<String> playersCombo;
 	private JButton spinButton;
 	private DefaultComboBoxModel<String> playersModel;
+	private JButton spinSpinnerButton;
 
 	private SpinPanelListener spinPanelListener;
 	 
@@ -29,7 +30,7 @@ public class SpinPanel extends JPanel
 		Dimension dim = getPreferredSize();
 		dim.width = 250;
 		setPreferredSize(dim);
-		Border innerBorder = BorderFactory.createTitledBorder("Spin Player");
+		Border innerBorder = BorderFactory.createTitledBorder("Spin Coin");
 		Border outerBorder = BorderFactory.createEmptyBorder(5,5,5,5);
 		setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
 		
@@ -42,7 +43,7 @@ public class SpinPanel extends JPanel
 		
 		//set up individual components
 		spinButton = new JButton("Spin");
-		
+		spinSpinnerButton = new JButton("Spin Spinner");
 
 		spinButton.addActionListener(new ActionListener()
 		{
@@ -55,6 +56,20 @@ public class SpinPanel extends JPanel
 					spinPanelListener.spinPanelEventOccurred(id);
 				}
 			}	
+		});
+		
+		spinSpinnerButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(spinPanelListener != null)
+				{
+					spinPanelListener.spinSpinnerEventOccurred();
+				}
+				
+			}
+			
 		});
 		this.layoutComponents();
 	}
@@ -80,13 +95,21 @@ public class SpinPanel extends JPanel
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(playersCombo, gc);
 		
-		//final row fix OK BUTTON
+		//next row
 		gc.gridy++; //on 2
-		gc.weightx = 0;
-		gc.weighty = 2;
+		gc.weightx = 1;
+		gc.weighty = 0.1;
 		
 		gc.gridx = 1;
 		add(spinButton, gc);
+		
+		//final row fix OK BUTTON
+		gc.gridy++; //on 2
+		gc.weightx = 1;
+		gc.weighty = 0.1;
+		
+		gc.gridx = 1;
+		add(spinSpinnerButton, gc);
 	}
 
 	public void setSpinPanelListener(SpinPanelListener spinPanelListener) 

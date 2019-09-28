@@ -17,7 +17,9 @@ public class App {
 			{
 				GameEngine gameEngine = new GameEngineImpl();			
 				GameEngineCallback engineCallbackGUI = new GameEngineCallbackGUI(gameEngine);
+				GameEngineCallback engineCallback = new GameEngineCallbackImpl();
 				gameEngine.addGameEngineCallback(engineCallbackGUI);
+				gameEngine.addGameEngineCallback(engineCallback);
 
 			}
 		});

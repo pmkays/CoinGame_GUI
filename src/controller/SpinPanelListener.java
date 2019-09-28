@@ -20,6 +20,7 @@ public class SpinPanelListener
 	private MainFrame mainFrame;
 	private CoinPanel coinPanel;
 	private SummaryPanel summaryPanel;
+	Collection<Player> players;
 	
 	public SpinPanelListener(GameEngine gameEngine, MainFrame mainFrame, SummaryPanel summaryPanel)
 	{
@@ -27,6 +28,7 @@ public class SpinPanelListener
 		this.mainFrame = mainFrame;
 		this.summaryPanel = summaryPanel;
 		this.coinPanel = mainFrame.getCoinPanel(); 
+		this.players = gameEngine.getAllPlayers();
 		
 		//do coinPanel methods here
 	}
@@ -38,7 +40,7 @@ public class SpinPanelListener
 			@Override
 			public void run()
 			{
-				Collection<Player> players = gameEngine.getAllPlayers();
+				
 				Player spinPlayer = null;
 				for(Player player : players)
 				{
@@ -47,11 +49,15 @@ public class SpinPanelListener
 						spinPlayer = player;
 					}
 				}
-				summaryPanel.updatePlayerStatus(spinPlayer.getPlayerId());
+//				summaryPanel.updatePlayerStatus(spinPlayer.getPlayerId());
 				
 				if(!(spinPlayer.getBetType() == BetType.NO_BET) && spinPlayer.getBet() > 0)
 				{
+					summaryPanel.updatePlayerStatus(spinPlayer.getPlayerId());
 					gameEngine.spinPlayer(spinPlayer, 100, 1000, 100, 50, 500, 50);
+					summaryPanel.updatePanel();
+					summaryPanel.updatePlayerStatus("");
+					autoSpin();
 				}
 				else
 				{
@@ -60,9 +66,71 @@ public class SpinPanelListener
 					+ spinPlayer.getPlayerId(), "Unable to spin",
 					        JOptionPane.ERROR_MESSAGE);
 				}
-				summaryPanel.updatePanel();
-				summaryPanel.updatePlayerStatus("");
+//				summaryPanel.updatePanel();
+//				summaryPanel.updatePlayerStatus("");
 			}
 		}.start();
+	}
+
+	public void spinSpinnerEventOccurred() 
+	{
+		new Thread()
+		{
+			@Override
+			public void run()
+			{
+				int count = 0; 
+				Player toDelete = null;
+				summaryPanel.updateSpinnerStatus(true);
+				gameEngine.spinSpinner(100, 1000, 100, 50, 500, 50);
+				summaryPanel.updateSpinnerStatus(false);
+				
+				for(Player player : players)
+				{
+					count++;
+					player.resetBet();
+					if(player.getPoints() <=  0)
+					{
+						toDelete = player;
+						count--;
+					}
+				}
+				
+				if(toDelete != null)
+				{
+					gameEngine.removePlayer(toDelete);
+					JOptionPane.showMessageDialog(mainFrame,
+					        "Player: " + toDelete.getPlayerId() + " has been eliminated", "Player removed",
+					        JOptionPane.ERROR_MESSAGE);
+					
+					//refreshes the players combobox
+					mainFrame.getSpinPanel().showPlayers(players);
+					
+					//refreshes the toolbar
+					mainFrame.getSummaryPanel().updatePlayerCount(count);
+				}
+				summaryPanel.updatePanel();
+			}
+		}.start();
+		
+	}
+	
+	public void autoSpin()
+	{
+		int count = 0; 
+		int amountOfPlayers = players.size();
+		for(Player player : players)
+		{
+			if(player.getBet() > 0 && player.getBetType() != BetType.NO_BET && player.getResult() != null)
+			{
+				count++;
+			}
+		}
+		
+		if(count == amountOfPlayers)
+		{
+			spinSpinnerEventOccurred();
+			
+		}
 	}
 }

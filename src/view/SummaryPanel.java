@@ -62,5 +62,11 @@ public class SummaryPanel extends JPanel
 	{
 		statusBarPanel.setPlayerStatus(id);
 	}
+	
+	public void updateSpinnerStatus(boolean spinning)
+	{
+		statusBarPanel.setSpinnerStatus(spinning);
+	}
+	
 
 }

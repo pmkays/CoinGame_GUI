@@ -3,6 +3,8 @@ package view;
 import java.awt.BorderLayout;
 
 import java.awt.Component;
+import java.awt.GridLayout;
+import java.awt.Image;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -15,21 +17,32 @@ public class CoinPanel extends JPanel
 	private ImageIcon heads = new ImageIcon("heads.png");
 	private ImageIcon tails = new ImageIcon("tails.png");
 	
-	private JLabel face1 = new JLabel(heads);
-	private JLabel face2 = new JLabel(tails);
+	
+	private JLabel face1;
+	private JLabel face2;
 	
 
 	private Player player;
 	
 	public CoinPanel()
 	{
+		Image headsImage = heads.getImage(); 
+		Image newHeadsImage = headsImage.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		heads = new ImageIcon(newHeadsImage);
+		face1 = new JLabel(heads);
+		
+		Image tailsImage = tails.getImage();// transform it 
+		Image newTailsImage = tailsImage.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		tails = new ImageIcon(newTailsImage);
+		face2 = new JLabel(tails);
+		
 		Border innerBorder = BorderFactory.createTitledBorder("Coin Panel");
 		Border outerBorder = BorderFactory.createEmptyBorder(5,5,5,5);
 		setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
-		setLayout(new BorderLayout());
+		setLayout(new GridLayout(1,2));
 
-		add(face1, BorderLayout.WEST);
-		add(face2, BorderLayout.EAST);
+		add(face1);
+		add(face2);
 	}
 	
 	public void setFace1Heads()

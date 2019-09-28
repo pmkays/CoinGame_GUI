@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.Collection;
 import java.util.EventListener;
 
 
@@ -16,12 +17,14 @@ public class PlaceBetPanelListener
 	private GameEngine gameEngine;
 	private MainFrame mainFrame;
 	private SummaryPanel summaryPanel;
+	private SpinPanelListener spinPanelListener;
 	
 	public PlaceBetPanelListener(GameEngine gameEngine, MainFrame mainFrame, SummaryPanel summaryPanel) 
 	{
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
 		this.summaryPanel = summaryPanel; 
+		this.spinPanelListener = new SpinPanelListener(gameEngine, mainFrame, summaryPanel);
 	}
 
 	public void placeBetPanelEventOccurred(String id, int bet, String betTypeString)

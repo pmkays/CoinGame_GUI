@@ -54,7 +54,6 @@ public class RemovePlayerPanel extends JPanel
 				{
 					removePlayerListener.removePlayerEventOccurred(id);
 					playersModel.removeElement(playersCombo.getSelectedItem());
-					//refreshes the view after deletion of player
 				}
 			}	
 		});
