@@ -10,7 +10,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import controller.AddPlayerListener;
+import controller.AddPlayerButtonActionListener;
+import controller.AddPlayerPanelListener;
 
 public class AddPlayerPanel extends JPanel 
 {
@@ -20,21 +21,22 @@ public class AddPlayerPanel extends JPanel
 	private JTextField idField; 
 	private JTextField nameField;
 	private JTextField pointsField; 
-	private JButton okButton;
+	private JButton addButton;
 	
-	private AddPlayerListener addPlayerListener;
+	private AddPlayerPanelListener addPlayerListener;
 	 
 	public AddPlayerPanel()
 	{
 		Dimension dim = getPreferredSize();
 		dim.width = 250;
+		dim.height = 230;
 		setPreferredSize(dim);
 		Border innerBorder = BorderFactory.createTitledBorder("Add Player");
 		Border outerBorder = BorderFactory.createEmptyBorder(5,5,5,5);
 		setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
 		
 		//set up individual components
-		okButton = new JButton("Add");
+		addButton = new JButton("Add");
 		
 		idLabel = new JLabel("Player ID: ");
 		nameLabel = new JLabel("Player Name: ");
@@ -44,22 +46,8 @@ public class AddPlayerPanel extends JPanel
 		
 		pointsLabel = new JLabel("Initial Points: ");
 		pointsField = new JTextField(10);
-
-		okButton.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				String id = idField.getText();
-				String name = nameField.getText();
-				int points = Integer.parseInt(pointsField.getText());
-				
-				if (addPlayerListener != null)
-				{
-					addPlayerListener.addPlayerEventOccurred(id, name, points);
-				}
-			}	
-		});
+		
+		addButton.addActionListener(new AddPlayerButtonActionListener(this));
 
 		this.layoutComponents();
 	}
@@ -120,13 +108,36 @@ public class AddPlayerPanel extends JPanel
 		gc.weighty = 2;
 		
 		gc.gridx = 1;
-		add(okButton, gc);
+		add(addButton, gc);
 	}
 
-	public void setAddPlayerListener(AddPlayerListener addPlayerListener) 
+	public void setAddPlayerListener(AddPlayerPanelListener addPlayerListener) 
 	{
 		this.addPlayerListener = addPlayerListener;
 	}
+
+
+	public JTextField getIdField() 
+	{
+		return idField;
+	}
+
+	public JTextField getNameField() 
+	{
+		return nameField;
+	}
+
+	public JTextField getPointsField() 
+	{
+		return pointsField;
+	}
+
+	public AddPlayerPanelListener getAddPlayerListener() 
+	{
+		return addPlayerListener;
+	}
+	
+	
 
 }
 

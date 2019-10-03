@@ -21,7 +21,7 @@ public class CoinPanel extends JPanel
 	private JLabel face1;
 	private JLabel face2;
 	
-	public CoinPanel()
+	public CoinPanel(Toolbar toolbar)
 	{
 		Image headsImage = heads.getImage(); 
 		Image newHeadsImage = headsImage.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH);  

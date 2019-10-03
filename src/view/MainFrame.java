@@ -3,7 +3,6 @@ package view;
 import java.awt.BorderLayout;
 
 
-
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,27 +10,21 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
-import controller.AddPlayerListener;
+import controller.AddPlayerPanelListener;
 import controller.PlaceBetPanelListener;
-import controller.RemoveBetPanelListener;
-import controller.RemovePlayerListener;
-import controller.SpinPanelListener;
 import controller.ToolbarListener;
-//import controller.Controller;
 import model.interfaces.GameEngine;
 
 public class MainFrame extends JFrame
 {
 	private Toolbar toolbar;
 	private AddPlayerPanel addPlayerPanel;
-	private RemovePlayerPanel removePlayerPanel;
 	private PlaceBetPanel placeBetPanel;
-	private RemoveBetPanel removeBetPanel;
-	private SpinPanel spinPanel;
 	private CoinPanel coinPanel;
 	private CoinPanel lastCoinsPanel;
 	private SummaryPanel summaryPanel;
 	private StatusBarPanel statusBarPanel;
+	private SidePanels sidePanels; 
 	private GameEngine gameEngine;
 	
 	public MainFrame(GameEngine gameEngine)
@@ -42,47 +35,34 @@ public class MainFrame extends JFrame
 		setLayout(new BorderLayout());
 		this.gameEngine = gameEngine;
 		toolbar = new Toolbar();
+		toolbar.showPlayers(gameEngine.getAllPlayers());
 		
 		addPlayerPanel = new AddPlayerPanel();
-		removePlayerPanel = new RemovePlayerPanel();
-		placeBetPanel = new PlaceBetPanel();
-		removeBetPanel = new RemoveBetPanel();
-		spinPanel = new SpinPanel();
-		coinPanel = new CoinPanel();
+		placeBetPanel = new PlaceBetPanel(toolbar);
+		coinPanel = new CoinPanel(toolbar);
 		statusBarPanel = new StatusBarPanel();
 		summaryPanel = new SummaryPanel(gameEngine, statusBarPanel); 
-		
-		//set all side panels to invisible initially
-		terminatePanels();
-		
+		sidePanels = new SidePanels(placeBetPanel, addPlayerPanel);
+
 		setJMenuBar(createMenuBar());
 		
-		ToolbarListener toolbarListener = new ToolbarListener(toolbar, gameEngine, MainFrame.this);
+		ToolbarListener toolbarListener = new ToolbarListener(toolbar, gameEngine, summaryPanel, MainFrame.this);
 		toolbar.setToolbarListener(toolbarListener);
 		
-		AddPlayerListener addPlayerListener = new AddPlayerListener(gameEngine, MainFrame.this, summaryPanel);
+		AddPlayerPanelListener addPlayerListener = new AddPlayerPanelListener(gameEngine, MainFrame.this, summaryPanel, toolbar);
 		addPlayerPanel.setAddPlayerListener(addPlayerListener);
 		
-		RemovePlayerListener removePlayerListener = new RemovePlayerListener(gameEngine, MainFrame.this, summaryPanel);
-		removePlayerPanel.setRemovePlayerListener(removePlayerListener);
-		
-		PlaceBetPanelListener placeBetPanelListener = new PlaceBetPanelListener(gameEngine, MainFrame.this, summaryPanel);
+		PlaceBetPanelListener placeBetPanelListener = new PlaceBetPanelListener(gameEngine, MainFrame.this, summaryPanel, toolbar);
 		placeBetPanel.setPlaceBetPanelListener(placeBetPanelListener);
-		
-		RemoveBetPanelListener removeBetPanelListener = new RemoveBetPanelListener(gameEngine, MainFrame.this, summaryPanel);
-		removeBetPanel.setRemoveBetPanelListener(removeBetPanelListener);
-		
-		SpinPanelListener spinPanelListener = new SpinPanelListener(gameEngine, MainFrame.this, summaryPanel);
-		spinPanel.setSpinPanelListener(spinPanelListener);
-		
 		
 		add(coinPanel, BorderLayout.CENTER);
 		add(toolbar, BorderLayout.NORTH);
 		add(summaryPanel, BorderLayout.SOUTH);
+		add(sidePanels, BorderLayout.EAST);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setMinimumSize (new Dimension(700, 500));
-		setSize(750, 550);
+		setMinimumSize (new Dimension(775, 765));
+		setSize(800, 800);
 		setVisible(true);
 	}
 	
@@ -101,19 +81,9 @@ public class MainFrame extends JFrame
 		return addPlayerPanel;
 	}
 
-	public RemovePlayerPanel getRemovePlayerPanel() 
-	{
-		return removePlayerPanel;
-	}
-
 	public PlaceBetPanel getPlaceBetPanel() 
 	{
 		return placeBetPanel;
-	}
-
-	public RemoveBetPanel getRemoveBetPanel() 
-	{
-		return removeBetPanel;
 	}
 
 	public GameEngine getGameEngine() 
@@ -121,11 +91,6 @@ public class MainFrame extends JFrame
 		return gameEngine;
 	}
 
-	public SpinPanel getSpinPanel() 
-	{
-		return spinPanel;
-	}
-	
 	public SummaryPanel getSummaryPanel() 
 	{
 		return this.summaryPanel;
@@ -173,7 +138,7 @@ public class MainFrame extends JFrame
 			public void actionPerformed(ActionEvent e) 
 			{
 //				JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) e.getSource();	
-				terminatePanels();
+//				terminatePanels();
 			}
 		});
 		
@@ -203,15 +168,6 @@ public class MainFrame extends JFrame
 		});
 		
 		return menuBar; 
-	}
-	
-	public void terminatePanels()
-	{
-		addPlayerPanel.setVisible(false);
-		removePlayerPanel.setVisible(false);
-		placeBetPanel.setVisible(false);
-		removeBetPanel.setVisible(false);
-		spinPanel.setVisible(false);
 	}
 
 }

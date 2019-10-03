@@ -13,18 +13,21 @@ import model.enumeration.BetType;
 import model.interfaces.Player;
 import view.MainFrame;
 import view.SummaryPanel;
+import view.Toolbar;
 
-public class AddPlayerListener
+public class AddPlayerPanelListener
 {
 	private MainFrame mainFrame;
 	private GameEngine gameEngine;
 	private SummaryPanel summaryPanel;
+	private Toolbar toolbar;
 	
-	public AddPlayerListener(GameEngine gameEngine, MainFrame mainFrame, SummaryPanel summaryPanel) 
+	public AddPlayerPanelListener(GameEngine gameEngine, MainFrame mainFrame, SummaryPanel summaryPanel, Toolbar toolbar) 
 	{
 		this.gameEngine = gameEngine; 
 		this.mainFrame = mainFrame;
 		this.summaryPanel = summaryPanel;
+		this.toolbar = toolbar; 
 	} 
  
 	public void addPlayerEventOccurred(String id, String name, int points)
@@ -47,6 +50,7 @@ public class AddPlayerListener
 		        JOptionPane.INFORMATION_MESSAGE);
 		summaryPanel.updatePanel(); 
 		summaryPanel.updatePlayerCount(playerCount);
+		toolbar.showPlayers(players);
 		
 	}
 
