@@ -29,6 +29,7 @@ public class MainFrame extends JFrame
 	private RemoveBetPanel removeBetPanel;
 	private SpinPanel spinPanel;
 	private CoinPanel coinPanel;
+	private CoinPanel lastCoinsPanel;
 	private SummaryPanel summaryPanel;
 	private StatusBarPanel statusBarPanel;
 	private GameEngine gameEngine;
@@ -128,6 +129,23 @@ public class MainFrame extends JFrame
 	public SummaryPanel getSummaryPanel() 
 	{
 		return this.summaryPanel;
+	}
+	
+	public void setCoinPanel(CoinPanel coinPanel)
+	{
+//		this.coinPanel.setVisible(false);
+		this.coinPanel = coinPanel;
+		this.coinPanel.setVisible(false);
+		this.coinPanel.setVisible(true);
+//		this.coinPanel.setVisible(false);
+//		add(lastCoinsPanel, BorderLayout.CENTER); 
+//		this.coinPanel.setVisible(true);
+//		remove(this.coinPanel);
+//		this.coinPanel = coinPanel;
+//		add(this.coinPanel, BorderLayout.CENTER);
+//		this.coinPanel.setVisible(true); 
+//		this.coinPanel.repaint();
+//		this.coinPanel.revalidate();
 	}
 
 	private JMenuBar createMenuBar()

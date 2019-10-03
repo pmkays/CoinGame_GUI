@@ -41,50 +41,35 @@ public class ToolbarListener
 		if(button == toolbar.getAddPlayerButton())
 		{
 			mainFrame.add(addPlayerPanel, BorderLayout.EAST);
+			mainFrame.terminatePanels();
 			addPlayerPanel.setVisible(true);
-			removePlayerPanel.setVisible(false);
-			placeBetPanel.setVisible(false);
-			removeBetPanel.setVisible(false);
-			spinPanel.setVisible(false);
 		}
 		else if (button == toolbar.getRemovePlayerButton())
 		{
 			mainFrame.add(removePlayerPanel, BorderLayout.EAST);
+			mainFrame.terminatePanels();
 			removePlayerPanel.setVisible(true);
-			addPlayerPanel.setVisible(false);
-			placeBetPanel.setVisible(false);
-			removeBetPanel.setVisible(false);
-			spinPanel.setVisible(false);
 			removePlayerPanel.showPlayers(gameEngine.getAllPlayers());
 		}
 		else if (button == toolbar.getPlaceBetButton())
 		{
 			mainFrame.add(placeBetPanel, BorderLayout.EAST);
+			mainFrame.terminatePanels();
 			placeBetPanel.setVisible(true);
-			removePlayerPanel.setVisible(false);
-			addPlayerPanel.setVisible(false);
-			removeBetPanel.setVisible(false);
-			spinPanel.setVisible(false);
 			placeBetPanel.showPlayers(gameEngine.getAllPlayers());	
 		}
 		else if (button == toolbar.getRemoveBetButton())
 		{
 			mainFrame.add(removeBetPanel, BorderLayout.EAST);
+			mainFrame.terminatePanels();
 			removeBetPanel.setVisible(true);
-			placeBetPanel.setVisible(false);
-			removePlayerPanel.setVisible(false);
-			addPlayerPanel.setVisible(false);
-			spinPanel.setVisible(false);
 			removeBetPanel.showPlayers(gameEngine.getAllPlayers());					
 		}
 		else if (button == toolbar.getSpinButton())
 		{
 			mainFrame.add(spinPanel, BorderLayout.EAST);
+			mainFrame.terminatePanels();
 			spinPanel.setVisible(true);
-			removeBetPanel.setVisible(false);
-			placeBetPanel.setVisible(false);
-			removePlayerPanel.setVisible(false);
-			addPlayerPanel.setVisible(false);
 			spinPanel.showPlayers(gameEngine.getAllPlayers());					
 		}
 		

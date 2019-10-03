@@ -21,18 +21,15 @@ public class CoinPanel extends JPanel
 	private JLabel face1;
 	private JLabel face2;
 	
-
-	private Player player;
-	
 	public CoinPanel()
 	{
 		Image headsImage = heads.getImage(); 
-		Image newHeadsImage = headsImage.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		Image newHeadsImage = headsImage.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH);  
 		heads = new ImageIcon(newHeadsImage);
 		face1 = new JLabel(heads);
 		
 		Image tailsImage = tails.getImage();// transform it 
-		Image newTailsImage = tailsImage.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		Image newTailsImage = tailsImage.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH); 
 		tails = new ImageIcon(newTailsImage);
 		face2 = new JLabel(tails);
 		
@@ -80,5 +77,27 @@ public class CoinPanel extends JPanel
 	{
 		face2.repaint(); 
 		face2.revalidate();
+	}
+	
+
+	public void setCoin(CoinFace face1, CoinFace face2) 
+	{
+		if (face1 == CoinFace.HEADS)
+		{
+			setFace1Heads(); 
+		}
+		else if (face1 == CoinFace.TAILS)
+		{
+			setFace1Tails(); 
+		}
+		
+		if(face2 == CoinFace.HEADS)
+		{
+			setFace2Heads();
+		}
+		else if(face2 == CoinFace.TAILS)
+		{
+			setFace2Tails();
+		}	
 	}
 }

@@ -44,6 +44,19 @@ public class SpinPanel extends JPanel
 		//set up individual components
 		spinButton = new JButton("Spin");
 		spinSpinnerButton = new JButton("Spin Spinner");
+		
+		playersCombo.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				String id = (String) playersCombo.getSelectedItem();
+				if(spinPanelListener  != null)
+				{
+					spinPanelListener.displayLastCoins(id); 
+				}		
+			}	
+		});
 
 		spinButton.addActionListener(new ActionListener()
 		{
@@ -67,9 +80,7 @@ public class SpinPanel extends JPanel
 				{
 					spinPanelListener.spinSpinnerEventOccurred();
 				}
-				
-			}
-			
+			}	
 		});
 		this.layoutComponents();
 	}

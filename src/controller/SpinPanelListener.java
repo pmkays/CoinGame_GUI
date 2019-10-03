@@ -8,6 +8,7 @@ import java.util.Collection;
 import javax.swing.JOptionPane;
 
 import model.enumeration.BetType;
+import model.enumeration.CoinFace;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
 import view.CoinPanel;
@@ -21,6 +22,7 @@ public class SpinPanelListener
 	private CoinPanel coinPanel;
 	private SummaryPanel summaryPanel;
 	Collection<Player> players;
+	private boolean readyToSpin = true;
 	
 	public SpinPanelListener(GameEngine gameEngine, MainFrame mainFrame, SummaryPanel summaryPanel)
 	{
@@ -29,47 +31,46 @@ public class SpinPanelListener
 		this.summaryPanel = summaryPanel;
 		this.coinPanel = mainFrame.getCoinPanel(); 
 		this.players = gameEngine.getAllPlayers();
-		
-		//do coinPanel methods here
 	}
 
 	public void spinPanelEventOccurred(String id) 
-	{
-		new Thread()
+	{	
+		if(readyToSpin)
 		{
-			@Override
-			public void run()
+			new Thread()
 			{
-				
-				Player spinPlayer = null;
-				for(Player player : players)
+				@Override
+				public void run()
 				{
-					if(player.getPlayerId().equals(id))
+					
+					Player spinPlayer = null;
+					for(Player player : players)
 					{
-						spinPlayer = player;
+						if(player.getPlayerId().equals(id))
+						{
+							spinPlayer = player;
+						}
 					}
+					if(!(spinPlayer.getBetType() == BetType.NO_BET) && spinPlayer.getBet() > 0)
+					{
+						summaryPanel.updatePlayerStatus(spinPlayer.getPlayerId());
+						readyToSpin = false; 
+						gameEngine.spinPlayer(spinPlayer, 100, 1000, 100, 50, 500, 50);
+						summaryPanel.updatePanel();
+						summaryPanel.updatePlayerStatus("");
+						autoSpin();
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(mainFrame,
+						        "Please ensure that a bet has been placed for player: " 
+						+ spinPlayer.getPlayerId(), "Unable to spin",
+						        JOptionPane.ERROR_MESSAGE);
+					}
+					readyToSpin = true;
 				}
-//				summaryPanel.updatePlayerStatus(spinPlayer.getPlayerId());
-				
-				if(!(spinPlayer.getBetType() == BetType.NO_BET) && spinPlayer.getBet() > 0)
-				{
-					summaryPanel.updatePlayerStatus(spinPlayer.getPlayerId());
-					gameEngine.spinPlayer(spinPlayer, 100, 1000, 100, 50, 500, 50);
-					summaryPanel.updatePanel();
-					summaryPanel.updatePlayerStatus("");
-					autoSpin();
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(mainFrame,
-					        "Please ensure that a bet has been placed for player: " 
-					+ spinPlayer.getPlayerId(), "Unable to spin",
-					        JOptionPane.ERROR_MESSAGE);
-				}
-//				summaryPanel.updatePanel();
-//				summaryPanel.updatePlayerStatus("");
-			}
-		}.start();
+			}.start();
+		}
 	}
 
 	public void spinSpinnerEventOccurred() 
@@ -131,6 +132,27 @@ public class SpinPanelListener
 		{
 			spinSpinnerEventOccurred();
 			
+		}
+	}
+
+	public void displayLastCoins(String id) 
+	{
+		CoinFace face1 = null;
+		CoinFace face2 = null;
+		
+		
+		for(Player player : players)
+		{
+			if(player.getPlayerId().equals(id) && player.getResult() != null)
+			{
+				face1 = player.getResult().getCoin1().getFace();
+				face2 = player.getResult().getCoin2().getFace();
+				CoinPanel newCoinPanel = new CoinPanel();
+				newCoinPanel.setCoin(face1, face2);
+				mainFrame.setCoinPanel(newCoinPanel);
+				coinPanel.setVisible(false);
+				coinPanel.setVisible(true);
+			}
 		}
 	}
 }

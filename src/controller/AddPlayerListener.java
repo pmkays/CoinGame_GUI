@@ -31,7 +31,6 @@ public class AddPlayerListener
 	{
 		int playerCount = 0;
 		Player player = new SimplePlayer(id, name, points);
-		player.setBetType(BetType.NO_BET);
 		
 		gameEngine.addPlayer(player); //same playerID still can get added?
 		

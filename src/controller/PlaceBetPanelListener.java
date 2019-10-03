@@ -17,19 +17,19 @@ public class PlaceBetPanelListener
 	private GameEngine gameEngine;
 	private MainFrame mainFrame;
 	private SummaryPanel summaryPanel;
-	private SpinPanelListener spinPanelListener;
 	
 	public PlaceBetPanelListener(GameEngine gameEngine, MainFrame mainFrame, SummaryPanel summaryPanel) 
 	{
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
 		this.summaryPanel = summaryPanel; 
-		this.spinPanelListener = new SpinPanelListener(gameEngine, mainFrame, summaryPanel);
 	}
 
 	public void placeBetPanelEventOccurred(String id, int bet, String betTypeString)
 	{
 		BetType betType = null;
+		int noBet = 0;
+		Player player = gameEngine.getPlayer(id);
 		
 		switch(betTypeString)
 		{
@@ -44,9 +44,10 @@ public class PlaceBetPanelListener
 			break;
 		case "No Bet":
 			betType = BetType.NO_BET;
+			bet = noBet; 
 			break;
 		}
-		Player player = gameEngine.getPlayer(id);
+
 		
 		if(bet <= player.getPoints())
 		{
@@ -58,7 +59,7 @@ public class PlaceBetPanelListener
 		else
 		{
 			JOptionPane.showMessageDialog(mainFrame,
-			        "Unable to place bet. Please ensure Player: "  + id + "has sufficient points", "Invalid bet",
+			        "Unable to place bet. Please ensure Player: "  + id + " has sufficient points", "Invalid bet",
 			        JOptionPane.ERROR_MESSAGE);
 		}
 		
