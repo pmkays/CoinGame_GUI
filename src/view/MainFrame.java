@@ -40,6 +40,7 @@ public class MainFrame extends JFrame
 		addPlayerPanel = new AddPlayerPanel();
 		placeBetPanel = new PlaceBetPanel(toolbar);
 		coinPanel = new CoinPanel(toolbar);
+		lastCoinsPanel = new CoinPanel(toolbar);
 		statusBarPanel = new StatusBarPanel();
 		summaryPanel = new SummaryPanel(gameEngine, statusBarPanel); 
 		sidePanels = new SidePanels(placeBetPanel, addPlayerPanel);
@@ -168,6 +169,11 @@ public class MainFrame extends JFrame
 		});
 		
 		return menuBar; 
+	}
+
+	public CoinPanel getLastCoinsPanel() 
+	{
+		return lastCoinsPanel;
 	}
 
 }

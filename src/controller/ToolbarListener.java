@@ -87,12 +87,14 @@ public class ToolbarListener
 				player.resetBet();
 			}
 		}
+		
+//		autoSpin();
+		
 		System.out.println(gameEngine.getAllPlayers());
 		JOptionPane.showMessageDialog(mainFrame,
 		        "Bet successfully removed for Player:" + id, "Bet Placed",
 		        JOptionPane.INFORMATION_MESSAGE);	
 		summaryPanel.updatePanel();
-		
 	}
 	
 	public void spinPanelEventOccurred(String id) 
@@ -117,7 +119,9 @@ public class ToolbarListener
 					{
 						summaryPanel.updatePlayerStatus(spinPlayer.getPlayerId());
 						readyToSpin = false; 
+						toolbar.getSpinButton().setEnabled(false);
 						gameEngine.spinPlayer(spinPlayer, 100, 1000, 100, 50, 500, 50);
+						toolbar.getSpinButton().setEnabled(true);
 						summaryPanel.updatePanel();
 						summaryPanel.updatePlayerStatus("");
 						autoSpin();
@@ -142,20 +146,32 @@ public class ToolbarListener
 			@Override
 			public void run()
 			{
-				int count = 0; 
+				//sets the spinner coin panel for spinning in the mainframe
+				CoinPanel coinPanel = mainFrame.getCoinPanel();
+				mainFrame.getLastCoinsPanel().setVisible(false);
+				mainFrame.add(coinPanel, BorderLayout.CENTER);
+				coinPanel.setVisible(true);
+				
+				int playerCount = 0; 
 				Player toDelete = null;
+				
+				//handles the spinner status and the actual spin logic
 				summaryPanel.updateSpinnerStatus(true);
+				toolbar.getSpinSpinnerButton().setEnabled(true);
 				gameEngine.spinSpinner(100, 1000, 100, 50, 500, 50);
 				summaryPanel.updateSpinnerStatus(false);
 				
+				toolbar.getSpinSpinnerButton().setEnabled(false);
+				
+				//keeps count of players and finds player to delete
 				for(Player player : players)
 				{
-					count++;
+					playerCount++;
 					player.resetBet();
 					if(player.getPoints() <=  0)
 					{
 						toDelete = player;
-						count--;
+						playerCount--;
 					}
 				}
 				
@@ -166,10 +182,11 @@ public class ToolbarListener
 					        "Player: " + toDelete.getPlayerId() + " has been eliminated", "Player removed",
 					        JOptionPane.ERROR_MESSAGE);
 					
-					//refreshes the toolbar
-					mainFrame.getSummaryPanel().updatePlayerCount(count);
+					//refreshes the toolbar with the player count after removal
+					mainFrame.getSummaryPanel().updatePlayerCount(playerCount);
 				}
-				summaryPanel.updatePanel();
+//				summaryPanel.updatePanel();
+				summaryPanel.updateWinner();
 			}
 		}.start();
 		
@@ -181,12 +198,14 @@ public class ToolbarListener
 		int amountOfPlayers = players.size();
 		for(Player player : players)
 		{
-			if(player.getBet() > 0 && player.getBetType() != BetType.NO_BET && player.getResult() != null)
+			//ensures all players have bet and spun
+			if(player.getResult() != null)
 			{
 				count++;
 			}
 		}
 		
+		//i.e. if all the players have spun
 		if(count == amountOfPlayers)
 		{
 			spinSpinnerEventOccurred();
@@ -204,13 +223,20 @@ public class ToolbarListener
 		{
 			if(player.getPlayerId().equals(id) && player.getResult() != null)
 			{
+				//finds the face from the results of each coin flip
 				face1 = player.getResult().getCoin1().getFace();
 				face2 = player.getResult().getCoin2().getFace();
-				CoinPanel newCoinPanel = new CoinPanel(toolbar);
+				
+				//displays the last-spun coins by making a new coinPanel and setting its faces
+				CoinPanel newCoinPanel = mainFrame.getLastCoinsPanel();
+				mainFrame.getCoinPanel().setVisible(false);
 				newCoinPanel.setCoin(face1, face2);
-				mainFrame.setCoinPanel(newCoinPanel);
-				coinPanel.setVisible(false);
-				coinPanel.setVisible(true);
+				mainFrame.add(newCoinPanel, BorderLayout.CENTER);
+
+				//refreshes the main panel so newCoinPanel can be seen
+				newCoinPanel.setVisible(true);
+				mainFrame.revalidate();
+				mainFrame.repaint();
 			}
 		}
 	}

@@ -41,6 +41,7 @@ public class Toolbar extends JPanel
 		playersCombo.setModel(playersModel);
 		playersCombo.setBorder(BorderFactory.createEtchedBorder());
 		
+		spinSpinnerButton.setEnabled(false);
 		
 		removePlayerButton.addActionListener(new RemovePlayerActionListener(this));
 		
@@ -78,7 +79,17 @@ public class Toolbar extends JPanel
 //	{
 //		this.spinListener = listener;
 //	}
-
+	
+	
+	public JButton getSpinSpinnerButton()
+	{
+		return this.spinSpinnerButton;
+	}
+	
+	public JButton getSpinButton()
+	{
+		return this.spinButton;
+	}
 	
 	public JComboBox<String> getPlayersCombo()
 	{

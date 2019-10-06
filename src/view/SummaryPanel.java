@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -17,8 +18,10 @@ import model.interfaces.Player;
 public class SummaryPanel extends JPanel 
 {
 	private GameEngine gameEngine;
-	JLabel displayUpdates;
+	private JLabel displayUpdates;
 	private StatusBarPanel statusBarPanel;
+	private Collection<Player> players;
+	private String playersDisplay;
 	public SummaryPanel(GameEngine gameEngine, StatusBarPanel statusBarPanel)
 	{
 		this.statusBarPanel = statusBarPanel;
@@ -26,6 +29,7 @@ public class SummaryPanel extends JPanel
 		dim.height = 150;
 		setPreferredSize(dim);
 		this.gameEngine = gameEngine;
+		this.players  = gameEngine.getAllPlayers(); 
 		
 		Border innerBorder = BorderFactory.createTitledBorder("Summary Panel");
 		Border outerBorder = BorderFactory.createEmptyBorder(5,5,5,5);
@@ -41,8 +45,8 @@ public class SummaryPanel extends JPanel
 	
 	public void updatePanel()
 	{
-		String playersDisplay = "<html>";	
-		Collection<Player> players = gameEngine.getAllPlayers();
+		playersDisplay = "";
+		playersDisplay = "<html>";	
 		for(Player player : players)
 		{	
 			playersDisplay += player.toString() + "<br/>";
@@ -51,6 +55,24 @@ public class SummaryPanel extends JPanel
 		displayUpdates.setText(playersDisplay);
 		this.repaint();
 		this.revalidate();
+	}
+	
+	public void updateWinner()
+	{
+		updatePanel();
+		int highestPoints = 0;
+		for(Player player : players)
+		{
+			if(highestPoints < player.getPoints())
+			{
+				highestPoints = player.getPoints();
+			}
+		}
+		String displayWinner = playersDisplay + "<html><br/>" + String.valueOf(highestPoints) + "<br/></html>";
+		displayUpdates.setText(displayWinner);
+		this.repaint();
+		this.revalidate();
+		System.out.println(displayWinner);
 	}
 	
 	public void updatePlayerCount(int count)
