@@ -13,7 +13,7 @@ import controller.RemovePlayerActionListener;
 import controller.SpinActionListener;
 //import controller.SpinPanelListener;
 import controller.SpinSpinnerActionListener;
-import controller.ToolbarListener;
+import controller.ToolbarViewModel;
 import controller.ViewPlayersActionListener;
 import model.interfaces.Player;
 
@@ -26,7 +26,7 @@ public class Toolbar extends JPanel
 	private DefaultComboBoxModel<String> playersModel;
 	private JComboBox<String> playersCombo;
 	
-	private ToolbarListener toolbarListener;
+	private ToolbarViewModel toolbarListener;
 //	private SpinPanelListener spinListener; 
 	
 	public Toolbar()
@@ -62,13 +62,13 @@ public class Toolbar extends JPanel
 		add(playersCombo);
 	}
 	
-	public void setToolbarListener(ToolbarListener listener)
+	public void setToolbarListener(ToolbarViewModel listener)
 	{
 		this.toolbarListener = listener;
 	}
 	
 
-	public ToolbarListener getToolbarListener() 
+	public ToolbarViewModel getToolbarListener() 
 	{
 		// TODO Auto-generated method stub
 		return this.toolbarListener;

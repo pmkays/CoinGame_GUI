@@ -3,7 +3,9 @@ package controller;
 import java.awt.BorderLayout;
 
 
+
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventListener;
 
@@ -22,25 +24,26 @@ import view.PlaceBetPanel;
 import view.SummaryPanel;
 import view.Toolbar;
 
-public class ToolbarListener
+public class ToolbarViewModel
 {
 	private Toolbar toolbar;
 	private GameEngine gameEngine;
 	private MainFrame mainFrame; 
 	private SummaryPanel summaryPanel;
 	private Collection<Player> players;
-	private CoinPanel coinPanel;
+	private Collection<Player> spunPlayers; 
 	private boolean readyToSpin;
+	Player spinPlayer = null;
 	
-	public ToolbarListener(Toolbar toolbar, GameEngine gameEngine, SummaryPanel summaryPanel, MainFrame mainFrame)
+	public ToolbarViewModel(Toolbar toolbar, GameEngine gameEngine, SummaryPanel summaryPanel, MainFrame mainFrame)
 	{
 		this.toolbar = toolbar;
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
 		this.summaryPanel = summaryPanel;
 		this.players =gameEngine.getAllPlayers();
-		this.coinPanel = mainFrame.getCoinPanel();
 		this.readyToSpin = true;
+		this.spunPlayers = new ArrayList<Player>();
 	}
 	
 	public void removePlayerEventOccurred(String id) 
@@ -85,16 +88,16 @@ public class ToolbarListener
 			if(player.getPlayerId().equals(id))
 			{
 				player.resetBet();
+				spunPlayers.add(player);
 			}
 		}
-		
-//		autoSpin();
-		
+			
 		System.out.println(gameEngine.getAllPlayers());
 		JOptionPane.showMessageDialog(mainFrame,
-		        "Bet successfully removed for Player:" + id, "Bet Placed",
+		        "Bet successfully removed for Player:" + id, "Bet Removed",
 		        JOptionPane.INFORMATION_MESSAGE);	
 		summaryPanel.updatePanel();
+		autoSpin();
 	}
 	
 	public void spinPanelEventOccurred(String id) 
@@ -107,7 +110,6 @@ public class ToolbarListener
 				public void run()
 				{
 					
-					Player spinPlayer = null;
 					for(Player player : players)
 					{
 						if(player.getPlayerId().equals(id))
@@ -115,16 +117,31 @@ public class ToolbarListener
 							spinPlayer = player;
 						}
 					}
-					if(!(spinPlayer.getBetType() == BetType.NO_BET) && spinPlayer.getBet() > 0)
+					if(!(spinPlayer.getBetType() == BetType.NO_BET) 
+							&& spinPlayer.getBet() > 0 && !(hasSpunBefore(spinPlayer)))
 					{
+						CoinPanel coinPanel = mainFrame.getCoinPanel();
+						mainFrame.getLastCoinsPanel().setVisible(false);
+						mainFrame.add(coinPanel, BorderLayout.CENTER);
+						coinPanel.setVisible(true);
+						
 						summaryPanel.updatePlayerStatus(spinPlayer.getPlayerId());
 						readyToSpin = false; 
 						toolbar.getSpinButton().setEnabled(false);
 						gameEngine.spinPlayer(spinPlayer, 100, 1000, 100, 50, 500, 50);
+						spunPlayers.add(spinPlayer);
 						toolbar.getSpinButton().setEnabled(true);
+						
 						summaryPanel.updatePanel();
 						summaryPanel.updatePlayerStatus("");
 						autoSpin();
+					}
+					else if (hasSpunBefore(spinPlayer))
+					{
+						JOptionPane.showMessageDialog(mainFrame,
+						        "Player: " 
+						+ spinPlayer.getPlayerId() + "has already spun!", "Unable to spin",
+						        JOptionPane.ERROR_MESSAGE);
 					}
 					else
 					{
@@ -138,6 +155,7 @@ public class ToolbarListener
 			}.start();
 		}
 	}
+	
 
 	public void spinSpinnerEventOccurred() 
 	{
@@ -152,61 +170,61 @@ public class ToolbarListener
 				mainFrame.add(coinPanel, BorderLayout.CENTER);
 				coinPanel.setVisible(true);
 				
-				int playerCount = 0; 
-				Player toDelete = null;
-				
 				//handles the spinner status and the actual spin logic
 				summaryPanel.updateSpinnerStatus(true);
-				toolbar.getSpinSpinnerButton().setEnabled(true);
+//				toolbar.getSpinSpinnerButton().setEnabled(true);
 				gameEngine.spinSpinner(100, 1000, 100, 50, 500, 50);
-				summaryPanel.updateSpinnerStatus(false);
+//				summaryPanel.updateSpinnerStatus(false);
 				
 				toolbar.getSpinSpinnerButton().setEnabled(false);
 				
-				//keeps count of players and finds player to delete
-				for(Player player : players)
-				{
-					playerCount++;
-					player.resetBet();
-					if(player.getPoints() <=  0)
-					{
-						toDelete = player;
-						playerCount--;
-					}
-				}
+				//checks if any players need to get deleted
+				zeroPoints();
 				
-				if(toDelete != null)
-				{
-					gameEngine.removePlayer(toDelete);
-					JOptionPane.showMessageDialog(mainFrame,
-					        "Player: " + toDelete.getPlayerId() + " has been eliminated", "Player removed",
-					        JOptionPane.ERROR_MESSAGE);
-					
-					//refreshes the toolbar with the player count after removal
-					mainFrame.getSummaryPanel().updatePlayerCount(playerCount);
-				}
-//				summaryPanel.updatePanel();
 				summaryPanel.updateWinner();
+				spunPlayers.clear();
 			}
 		}.start();
-		
+	
 	}
 	
-	public void autoSpin()
+	
+	private void zeroPoints()
 	{
-		int count = 0; 
-		int amountOfPlayers = players.size();
+		int playerCount = 0; 
+		Player toDelete = null;
+		
+		//keeps count of players and finds player to delete
 		for(Player player : players)
 		{
-			//ensures all players have bet and spun
-			if(player.getResult() != null)
+			playerCount++;
+			player.resetBet();
+			if(player.getPoints() <=  0)
 			{
-				count++;
+				toDelete = player;
+				playerCount--;
 			}
 		}
 		
+		if(toDelete != null)
+		{
+			gameEngine.removePlayer(toDelete);
+			JOptionPane.showMessageDialog(mainFrame,
+			        "Player: " + toDelete.getPlayerId() + " has been eliminated", "Player removed",
+			        JOptionPane.ERROR_MESSAGE);
+			
+			//refreshes the toolbar with the player count after removal
+			mainFrame.getSummaryPanel().updatePlayerCount(playerCount);
+		}
+	}
+	
+	private void autoSpin()
+	{
+		int amountOfPlayers = players.size();
+		int spunPlayersAmount = spunPlayers.size();
+		
 		//i.e. if all the players have spun
-		if(count == amountOfPlayers)
+		if(spunPlayersAmount == amountOfPlayers)
 		{
 			spinSpinnerEventOccurred();
 			
@@ -217,7 +235,6 @@ public class ToolbarListener
 	{
 		CoinFace face1 = null;
 		CoinFace face2 = null;
-		
 		
 		for(Player player : players)
 		{
@@ -241,4 +258,8 @@ public class ToolbarListener
 		}
 	}
 
+	private boolean hasSpunBefore(Player player)
+	{
+		return spunPlayers.contains(player);
+	}
 }

@@ -5,8 +5,10 @@ import java.awt.BorderLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 import model.interfaces.GameEngine;
+import model.GameEngineImpl;
 import model.enumeration.CoinFace;
 import model.interfaces.Coin;
 import model.interfaces.CoinPair;
@@ -20,14 +22,6 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 	private MainFrame mainFrame;
 	private SummaryPanel summaryPanel;
 	
-//	private ImageIcon heads = new ImageIcon("heads.png");
-//	private ImageIcon tails = new ImageIcon("tails.png");
-//	
-//	private JLabel face1 = new JLabel("");
-//	private JLabel face2 = new JLabel("");
-			
-
-	
 	public GameEngineCallbackGUI(GameEngine gameEngine)
 	{
 		this.mainFrame = new MainFrame(gameEngine); 
@@ -39,47 +33,78 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 	@Override
 	public void playerCoinUpdate(Player player, Coin coin, GameEngine engine)
 	{
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+				summaryPanel.updatePlayerStatus(player.getPlayerId());
+
+			}
+		});
 		coinFlip(coin);
 	}
 	
 	@Override
 	public void playerResult(Player player, CoinPair coinPair, GameEngine engine)
 	{
-		// TODO Auto-generated method stub
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+				summaryPanel.updatePanel();
+				summaryPanel.updatePlayerStatus("");
+
+			}
+		});
+
 	}
 
 	@Override
 	public void spinnerCoinUpdate(Coin coin, GameEngine engine) 
 	{
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+				summaryPanel.updateSpinnerStatus(true);
+
+			}
+		});
 		coinFlip(coin);
 	}
 
 	@Override
 	public void spinnerResult(CoinPair coinPair, GameEngine engine) 
 	{
-		
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+				summaryPanel.updateSpinnerStatus(false);
+			}
+		});
 	}
 	
 	private void coinFlip(Coin coin)
 	{
 		if(coin.getFace() == CoinFace.HEADS && coin.getNumber() == 1)
 		{
-//			System.out.println("coin1heads");
 			coinPanel.setFace1Heads();
 		}
 		else if (coin.getFace() == CoinFace.TAILS && coin.getNumber() == 1)
 		{
-//			System.out.println("coin1tails");
 			coinPanel.setFace1Tails();
 		}			
 		else if(coin.getFace() == CoinFace.HEADS && coin.getNumber() == 2)
 		{
-//			System.out.println("coin2heads");
 			coinPanel.setFace2Heads();
 		}
 		else if (coin.getFace() == CoinFace.TAILS && coin.getNumber() == 2)
 		{
-//			System.out.println("coin2tails");
 			coinPanel.setFace2Tails();
 		}
 	}

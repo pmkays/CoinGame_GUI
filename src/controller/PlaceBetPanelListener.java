@@ -45,10 +45,6 @@ public class PlaceBetPanelListener
 		case "Both":
 			betType = BetType.BOTH;
 			break;
-		case "No Bet":
-			betType = BetType.NO_BET;
-			bet = noBet; 
-			break;
 		}
 
 		

@@ -53,7 +53,6 @@ public class PlaceBetPanel extends JPanel
 		betTypeModel.addElement("Coin 1");
 		betTypeModel.addElement("Coin 2");
 		betTypeModel.addElement("Both");
-		betTypeModel.addElement("No Bet");
 		betTypeCombo = new JComboBox<String>();
 		betTypeCombo.setModel(betTypeModel);
 		betTypeCombo.setBorder(BorderFactory.createEtchedBorder());

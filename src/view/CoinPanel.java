@@ -1,36 +1,51 @@
 package view;
 
-import java.awt.BorderLayout;
-
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Image;
-
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 
 import model.enumeration.CoinFace;
-import model.interfaces.Player;
 
-public class CoinPanel extends JPanel
+public class CoinPanel extends JPanel implements ComponentListener
 {
 	private ImageIcon heads = new ImageIcon("heads.png");
 	private ImageIcon tails = new ImageIcon("tails.png");
 	
+	private boolean haveSpun;
 	
+	//heads and tails images resized for initial view
+	private Image newHeadsImage;
+	private Image newTailsImage;
+	
+	//jlabels getting added on
 	private JLabel face1;
 	private JLabel face2;
 	
-	public CoinPanel(Toolbar toolbar)
+	//resizable icons set by component listener
+	private ImageIcon tailsIcon;
+	private ImageIcon headsIcon;
+	
+	private MainFrame mainFrame;
+	
+	public CoinPanel(Toolbar toolbar, MainFrame mainFrame)
 	{
-		Image headsImage = heads.getImage(); 
-		Image newHeadsImage = headsImage.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH);  
-		heads = new ImageIcon(newHeadsImage);
-		face1 = new JLabel(heads);
+		this.mainFrame = mainFrame;
+		this.addComponentListener(this);
 		
-		Image tailsImage = tails.getImage();// transform it 
-		Image newTailsImage = tailsImage.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH); 
+		haveSpun = false;
+		
+		Image headsImage = heads.getImage(); 
+		newHeadsImage = headsImage.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH);  
+		
+		Image tailsImage = tails.getImage();
+		newTailsImage = tailsImage.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH); 
+		
+		heads = new ImageIcon(newHeadsImage);
 		tails = new ImageIcon(newTailsImage);
+		face1 = new JLabel(heads);
 		face2 = new JLabel(tails);
 		
 		Border innerBorder = BorderFactory.createTitledBorder("Coin Panel");
@@ -44,25 +59,25 @@ public class CoinPanel extends JPanel
 	
 	public void setFace1Heads()
 	{
-		face1.setIcon(heads);
+		face1.setIcon(headsIcon);
 		this.clearDisplayface1();
 	}
 	
 	public void setFace1Tails()
 	{
-		face1.setIcon(tails);
+		face1.setIcon(tailsIcon);
 		this.clearDisplayface1();
 	}
 	
 	public void setFace2Heads()
 	{
-		face2.setIcon(heads);
+		face2.setIcon(headsIcon);
 		this.clearDisplayface2();
 	}
 	
 	public void setFace2Tails()
 	{
-		face2.setIcon(tails);
+		face2.setIcon(tailsIcon);
 		this.clearDisplayface2();
 		
 	}
@@ -82,6 +97,7 @@ public class CoinPanel extends JPanel
 
 	public void setCoin(CoinFace face1, CoinFace face2) 
 	{
+		haveSpun = true;
 		if (face1 == CoinFace.HEADS)
 		{
 			setFace1Heads(); 
@@ -100,4 +116,61 @@ public class CoinPanel extends JPanel
 			setFace2Tails();
 		}	
 	}
+	
+	private void scaleImage(int width, int height)
+	{
+		//the panel's width is divided to fit two coin panels
+		int newWidth = width/2;
+		
+		//use the images that have a minimum size already displayed
+	    Image heads = newHeadsImage;
+	    Image tails = newTailsImage; 
+
+	    //if the panel is expanded horizontally (i.e. panel's width is getting larger)
+	    if(newWidth >= height)
+	    {
+	        heads = newHeadsImage.getScaledInstance(height, height, Image.SCALE_SMOOTH);
+	        tails = newTailsImage.getScaledInstance(height, height, Image.SCALE_SMOOTH);
+	    }
+	    else
+	    {
+	    	heads = newHeadsImage.getScaledInstance(newWidth, newWidth, Image.SCALE_SMOOTH);
+		    tails = newTailsImage.getScaledInstance(newWidth, newWidth, Image.SCALE_SMOOTH);
+	    }
+	    headsIcon = new ImageIcon(heads);
+	    tailsIcon = new ImageIcon(tails);
+	    
+	    //sets initial default coin faces before anyone has spun
+	    if(!haveSpun)
+	    {
+	    	face1.setIcon(headsIcon);
+	    	face2.setIcon(tailsIcon);
+	    }
+	}
+	
+
+	@Override
+	public void componentResized(ComponentEvent arg0) 
+	{
+		scaleImage(this.getWidth(), this.getHeight());
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

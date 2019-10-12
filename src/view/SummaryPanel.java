@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 
+import model.enumeration.BetType;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
 
@@ -46,13 +47,14 @@ public class SummaryPanel extends JPanel
 	public void updatePanel()
 	{
 		playersDisplay = "";
-		playersDisplay = "<html>";	
+//		playersDisplay = "<html>";	
 		for(Player player : players)
 		{	
 			playersDisplay += player.toString() + "<br/>";
 		}
-		playersDisplay += "</html>";
-		displayUpdates.setText(playersDisplay);
+//		playersDisplay += "</html>";
+		String playersDisplay2 = "<html>" + playersDisplay + "</html>";
+		displayUpdates.setText(playersDisplay2);
 		this.repaint();
 		this.revalidate();
 	}
@@ -61,14 +63,20 @@ public class SummaryPanel extends JPanel
 	{
 		updatePanel();
 		int highestPoints = 0;
+		String winner = "";
 		for(Player player : players)
 		{
-			if(highestPoints < player.getPoints())
+			if(!players.isEmpty())
 			{
-				highestPoints = player.getPoints();
+				if(highestPoints < player.getPoints())
+				{
+					highestPoints = player.getPoints();
+					winner = player.getPlayerId();
+				}
 			}
 		}
-		String displayWinner = playersDisplay + "<html><br/>" + String.valueOf(highestPoints) + "<br/></html>";
+		String displayWinner = "<html><br/>" + playersDisplay + "The winner is " + 
+		winner + " with " + String.valueOf(highestPoints) + " points!<br/></html>";
 		displayUpdates.setText(displayWinner);
 		this.repaint();
 		this.revalidate();
