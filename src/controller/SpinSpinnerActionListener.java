@@ -17,9 +17,9 @@ public class SpinSpinnerActionListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		if(toolbar.getToolbarListener() != null)
+		if(toolbar.getToolbarViewModel() != null)
 		{
-			toolbar.getToolbarListener().spinSpinnerEventOccurred();
+			toolbar.getToolbarViewModel().spinSpinnerEventOccurred();
 		}
 	}
 

@@ -11,6 +11,7 @@ public class SidePanels extends JPanel
 
 	public SidePanels(PlaceBetPanel placeBetPanel, AddPlayerPanel addPlayerPanel) 
 	{
+		//set initial sizes and dimensions
 		Dimension dim = getPreferredSize();
 		dim.width = 270;
 		setPreferredSize(dim);

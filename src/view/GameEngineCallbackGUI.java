@@ -1,14 +1,8 @@
 package view;
 
-import java.awt.BorderLayout;
-
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import model.interfaces.GameEngine;
-import model.GameEngineImpl;
 import model.enumeration.CoinFace;
 import model.interfaces.Coin;
 import model.interfaces.CoinPair;
@@ -17,7 +11,6 @@ import view.interfaces.GameEngineCallback;
 
 public class GameEngineCallbackGUI implements GameEngineCallback
 {
-	private GameEngine gameEngine;
 	private CoinPanel coinPanel;
 	private MainFrame mainFrame;
 	private SummaryPanel summaryPanel;
@@ -25,7 +18,6 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 	public GameEngineCallbackGUI(GameEngine gameEngine)
 	{
 		this.mainFrame = new MainFrame(gameEngine); 
-		this.gameEngine = gameEngine;
 		this.coinPanel = mainFrame.getCoinPanel();
 		this.summaryPanel = mainFrame.getSummaryPanel();
 	}
@@ -38,8 +30,8 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 			@Override
 			public void run() 
 			{
+				//displays which player is spinning
 				summaryPanel.updatePlayerStatus(player.getPlayerId());
-
 			}
 		});
 		coinFlip(coin);
@@ -53,12 +45,11 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 			@Override
 			public void run() 
 			{
+				//displays player results and no players spinning
 				summaryPanel.updatePanel();
 				summaryPanel.updatePlayerStatus("");
-
 			}
 		});
-
 	}
 
 	@Override
@@ -69,8 +60,8 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 			@Override
 			public void run() 
 			{
+				//displays spinner spinning
 				summaryPanel.updateSpinnerStatus(true);
-
 			}
 		});
 		coinFlip(coin);
@@ -84,6 +75,7 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 			@Override
 			public void run() 
 			{
+				//display spinning idle
 				summaryPanel.updateSpinnerStatus(false);
 			}
 		});
@@ -91,6 +83,7 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 	
 	private void coinFlip(Coin coin)
 	{
+		//decides what face to set for each coin
 		if(coin.getFace() == CoinFace.HEADS && coin.getNumber() == 1)
 		{
 			coinPanel.setFace1Heads();

@@ -3,9 +3,9 @@ package view;
 import java.awt.BorderLayout;
 
 
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.*;
@@ -31,36 +31,38 @@ public class MainFrame extends JFrame
 	public MainFrame(GameEngine gameEngine)
 	{
 		super("Coin Game");
-
+		
 		setLayout(new BorderLayout());
 		this.gameEngine = gameEngine;
-		toolbar = new Toolbar();
-		toolbar.showPlayers(gameEngine.getAllPlayers());
+		this.toolbar = new Toolbar();
+		this.toolbar.showPlayers(gameEngine.getAllPlayers());
 		
+		//add all new components that make up the mainframe
 		addPlayerPanel = new AddPlayerPanel();
 		placeBetPanel = new PlaceBetPanel(toolbar);
 		coinPanel = new CoinPanel(toolbar, this);
 		lastCoinsPanel = new CoinPanel(toolbar, this);
 		statusBarPanel = new StatusBarPanel();
-		summaryPanel = new SummaryPanel(gameEngine, statusBarPanel); 
+		summaryPanel = new SummaryPanel(gameEngine, statusBarPanel, MainFrame.this); 
 		sidePanels = new SidePanels(placeBetPanel, addPlayerPanel);
-
-		setJMenuBar(createMenuBar());
 		
-		ToolbarViewModel toolbarListener = new ToolbarViewModel(toolbar, gameEngine, summaryPanel, MainFrame.this);
-		toolbar.setToolbarListener(toolbarListener);
+		//create the Jmenubar
+		this.setJMenuBar(createMenuBar());
 		
+		//add listeners/view model
+		ToolbarViewModel toolbarViewModel = new ToolbarViewModel(toolbar, gameEngine, summaryPanel, MainFrame.this);
+		toolbar.setToolbarListener(toolbarViewModel);
 		AddPlayerPanelListener addPlayerListener = new AddPlayerPanelListener(gameEngine, MainFrame.this, summaryPanel, toolbar);
 		addPlayerPanel.setAddPlayerListener(addPlayerListener);
-		
-		PlaceBetPanelListener placeBetPanelListener = new PlaceBetPanelListener(gameEngine, MainFrame.this, summaryPanel, toolbar);
+		PlaceBetPanelListener placeBetPanelListener = new PlaceBetPanelListener(gameEngine, MainFrame.this, summaryPanel);
 		placeBetPanel.setPlaceBetPanelListener(placeBetPanelListener);
 		
 		add(coinPanel, BorderLayout.CENTER);
 		add(toolbar, BorderLayout.NORTH);
 		add(summaryPanel, BorderLayout.SOUTH);
 		add(sidePanels, BorderLayout.EAST);
-
+		
+		//specify dimensions and mainframe behaviour
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMinimumSize (new Dimension(775, 765));
 		setSize(800, 800);
@@ -70,27 +72,27 @@ public class MainFrame extends JFrame
 	
 	public CoinPanel getCoinPanel() 
 	{
-		return coinPanel;
+		return this.coinPanel;
 	}
 
 	public Toolbar getToolbar() 
 	{
-		return toolbar;
+		return this.toolbar;
 	}
 
 	public AddPlayerPanel getAddPlayerPanel() 
 	{
-		return addPlayerPanel;
+		return this.addPlayerPanel;
 	}
 
 	public PlaceBetPanel getPlaceBetPanel() 
 	{
-		return placeBetPanel;
+		return this.placeBetPanel;
 	}
 
 	public GameEngine getGameEngine() 
 	{
-		return gameEngine;
+		return this.gameEngine;
 	}
 
 	public SummaryPanel getSummaryPanel() 
@@ -111,7 +113,6 @@ public class MainFrame extends JFrame
 		JMenuItem exitItem = new JMenuItem("Exit");
 		MenuBarActionListener menubarActionListener = new MenuBarActionListener(this);
 		fileMenu.add(exitItem);
-		
 		menuBar.add(fileMenu);
 		
 		//configure what the Exit menu item does

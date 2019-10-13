@@ -18,6 +18,8 @@ public class AddPlayerButtonActionListener implements ActionListener
 	public void actionPerformed(ActionEvent e) 
 	{
 		AddPlayerPanelListener addPlayerListener = addPlayerPanel.getAddPlayerListener(); 
+		
+		//retrieve the values from the JTextFields
 		String id = addPlayerPanel.getIdField().getText();
 		String name = addPlayerPanel.getNameField().getText();
 		int points = Integer.parseInt(addPlayerPanel.getPointsField().getText());

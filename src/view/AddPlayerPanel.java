@@ -1,11 +1,10 @@
 package view;
 
 import java.awt.Dimension;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -27,6 +26,7 @@ public class AddPlayerPanel extends JPanel
 	 
 	public AddPlayerPanel()
 	{
+		//layout setting
 		Dimension dim = getPreferredSize();
 		dim.width = 250;
 		dim.height = 230;
@@ -37,13 +37,10 @@ public class AddPlayerPanel extends JPanel
 		
 		//set up individual components
 		addButton = new JButton("Add");
-		
 		idLabel = new JLabel("Player ID: ");
 		nameLabel = new JLabel("Player Name: ");
-		
 		idField = new JTextField(10);
 		nameField = new JTextField(10);
-		
 		pointsLabel = new JLabel("Initial Points: ");
 		pointsField = new JTextField(10);
 		
@@ -70,7 +67,6 @@ public class AddPlayerPanel extends JPanel
 		add(idLabel, gc);
 		
 		gc.gridx = 1;
-//		gc.gridy = 0;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(idField, gc);
 		
@@ -119,25 +115,23 @@ public class AddPlayerPanel extends JPanel
 
 	public JTextField getIdField() 
 	{
-		return idField;
+		return this.idField;
 	}
 
 	public JTextField getNameField() 
 	{
-		return nameField;
+		return this.nameField;
 	}
 
 	public JTextField getPointsField() 
 	{
-		return pointsField;
+		return this.pointsField;
 	}
 
 	public AddPlayerPanelListener getAddPlayerListener() 
 	{
-		return addPlayerListener;
+		return this.addPlayerListener;
 	}
-	
-	
 
 }
 

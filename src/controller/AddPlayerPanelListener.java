@@ -1,15 +1,11 @@
 package controller;
 
 import java.util.Collection;
-import java.util.EventListener;
-
-
 
 import javax.swing.JOptionPane;
 
 import model.interfaces.GameEngine;
 import model.SimplePlayer;
-import model.enumeration.BetType;
 import model.interfaces.Player;
 import view.MainFrame;
 import view.SummaryPanel;
@@ -32,24 +28,19 @@ public class AddPlayerPanelListener
  
 	public void addPlayerEventOccurred(String id, String name, int points)
 	{
-		int playerCount = 0;
 		Player player = new SimplePlayer(id, name, points);
 		
-		gameEngine.addPlayer(player); //same playerID still can get added?
+		gameEngine.addPlayer(player); 
 		
 		Collection<Player> players = gameEngine.getAllPlayers();
-		for(Player aPlayer : players)
-		{
-			playerCount++; 
 
-		}
-		
-		System.out.println(gameEngine.getAllPlayers());
 		JOptionPane.showMessageDialog(mainFrame,
 		        "Player: " + id + " added successfully", "Player Added",
 		        JOptionPane.INFORMATION_MESSAGE);
+		
+		//update summary panel and jcombobox
 		summaryPanel.updatePanel(); 
-		summaryPanel.updatePlayerCount(playerCount);
+		summaryPanel.updatePlayerCount(players.size());
 		toolbar.showPlayers(players);
 		
 	}

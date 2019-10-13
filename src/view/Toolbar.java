@@ -1,9 +1,6 @@
 package view;
 
 import java.awt.FlowLayout;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collection;
 
 import javax.swing.*;
@@ -11,7 +8,6 @@ import javax.swing.*;
 import controller.RemoveBetActionListener;
 import controller.RemovePlayerActionListener;
 import controller.SpinActionListener;
-//import controller.SpinPanelListener;
 import controller.SpinSpinnerActionListener;
 import controller.ToolbarViewModel;
 import controller.ViewPlayersActionListener;
@@ -26,12 +22,13 @@ public class Toolbar extends JPanel
 	private DefaultComboBoxModel<String> playersModel;
 	private JComboBox<String> playersCombo;
 	
-	private ToolbarViewModel toolbarListener;
-//	private SpinPanelListener spinListener; 
+	private ToolbarViewModel toolbarViewModel;
 	
 	public Toolbar()
 	{
 		setBorder(BorderFactory.createEtchedBorder());
+		
+		//set up components
 		removePlayerButton = new JButton("Remove Player");
 		removeBetButton = new JButton("Remove Bet");
 		spinButton = new JButton("Spin Coin"); 
@@ -41,16 +38,11 @@ public class Toolbar extends JPanel
 		playersCombo.setModel(playersModel);
 		playersCombo.setBorder(BorderFactory.createEtchedBorder());
 		
-		spinSpinnerButton.setEnabled(false);
-		
+		//set action listeners for each function of the toolbar
 		removePlayerButton.addActionListener(new RemovePlayerActionListener(this));
-		
 		removeBetButton.addActionListener(new RemoveBetActionListener(this));
-		
 		spinButton.addActionListener(new SpinActionListener(this));
-		
 		spinSpinnerButton.addActionListener(new SpinSpinnerActionListener(this));
-
 		playersCombo.addActionListener(new ViewPlayersActionListener(this));
 
 		setLayout(new FlowLayout(FlowLayout.LEFT)); 
@@ -64,22 +56,15 @@ public class Toolbar extends JPanel
 	
 	public void setToolbarListener(ToolbarViewModel listener)
 	{
-		this.toolbarListener = listener;
+		this.toolbarViewModel = listener;
 	}
 	
 
-	public ToolbarViewModel getToolbarListener() 
+	public ToolbarViewModel getToolbarViewModel() 
 	{
-		// TODO Auto-generated method stub
-		return this.toolbarListener;
+		return this.toolbarViewModel;
 	}
 
-	
-//	public void setSpinListener(SpinPanelListener listener)
-//	{
-//		this.spinListener = listener;
-//	}
-	
 	
 	public JButton getSpinSpinnerButton()
 	{
@@ -93,16 +78,19 @@ public class Toolbar extends JPanel
 	
 	public JComboBox<String> getPlayersCombo()
 	{
-		return playersCombo; 
+		return this.playersCombo; 
 	}
 	
 	public void showPlayers(Collection<Player> players)
 	{
+		//remove all players first
 		playersModel.removeAllElements();
+		
 		if(players != null && !players.isEmpty())
 		{
 			for(Player player : players)
 			{
+				//add each player to the combobox
 				playersModel.addElement(player.getPlayerId());
 			}
 		}

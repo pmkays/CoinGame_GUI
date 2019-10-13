@@ -1,23 +1,19 @@
 package view;
 
 import java.awt.Dimension;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Collection;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 
 import controller.PlaceBetButtonActionListener;
 import controller.PlaceBetPanelListener;
-import model.interfaces.Player;
 
 public class PlaceBetPanel extends JPanel 
 {
-	private JLabel idLabel; 
 	private JLabel betLabel;
 	private JLabel betTypeLabel;
 	private JTextField betField;
@@ -42,13 +38,12 @@ public class PlaceBetPanel extends JPanel
 		this.toolbar = toolbar; 
 		
 		//set up individual components
-		idLabel = new JLabel("Player ID: ");
 		betLabel = new JLabel("Bet: ");
 		betTypeLabel = new JLabel("Bet Type: ");
 		betField = new JTextField(10);
 		betButton = new JButton("Place Bet");
 
-		
+		//combobox setup
 		betTypeModel = new DefaultComboBoxModel<String>();
 		betTypeModel.addElement("Coin 1");
 		betTypeModel.addElement("Coin 2");
@@ -96,7 +91,7 @@ public class PlaceBetPanel extends JPanel
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(betTypeCombo, gc);
 		
-		//final row fix OK BUTTON
+		//final row
 		gc.gridy++; //on 2
 		gc.weightx = 0;
 		gc.weighty = 2;

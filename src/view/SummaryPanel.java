@@ -1,13 +1,13 @@
 package view;
 
 import java.awt.BorderLayout;
+
 import java.awt.Dimension;
 
 import java.util.Collection;
-import java.util.Collections;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
@@ -18,20 +18,23 @@ import model.interfaces.Player;
 
 public class SummaryPanel extends JPanel 
 {
-	private GameEngine gameEngine;
 	private JLabel displayUpdates;
 	private StatusBarPanel statusBarPanel;
 	private Collection<Player> players;
-	private String playersDisplay;
-	public SummaryPanel(GameEngine gameEngine, StatusBarPanel statusBarPanel)
+	private String playersInfo;
+	private MainFrame mainFrame;
+	public SummaryPanel(GameEngine gameEngine, StatusBarPanel statusBarPanel, MainFrame mainFrame)
 	{
+		this.mainFrame = mainFrame;
 		this.statusBarPanel = statusBarPanel;
+		this.players  = gameEngine.getAllPlayers(); 
+		
+		//set out summary panel
 		Dimension dim = getPreferredSize();
 		dim.height = 150;
 		setPreferredSize(dim);
-		this.gameEngine = gameEngine;
-		this.players  = gameEngine.getAllPlayers(); 
-		
+
+		//set up border
 		Border innerBorder = BorderFactory.createTitledBorder("Summary Panel");
 		Border outerBorder = BorderFactory.createEmptyBorder(5,5,5,5);
 		setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
@@ -46,15 +49,15 @@ public class SummaryPanel extends JPanel
 	
 	public void updatePanel()
 	{
-		playersDisplay = "";
-//		playersDisplay = "<html>";	
+		playersInfo = "";
 		for(Player player : players)
 		{	
-			playersDisplay += player.toString() + "<br/>";
+			playersInfo += player.toString() + "<br/>";
 		}
-//		playersDisplay += "</html>";
-		String playersDisplay2 = "<html>" + playersDisplay + "</html>";
-		displayUpdates.setText(playersDisplay2);
+		
+		//use html elements to format the outputted string
+		String playersDisplay = "<html>" + playersInfo + "</html>";
+		displayUpdates.setText(playersDisplay);
 		this.repaint();
 		this.revalidate();
 	}
@@ -68,19 +71,27 @@ public class SummaryPanel extends JPanel
 		{
 			if(!players.isEmpty())
 			{
-				if(highestPoints < player.getPoints())
+				if(highestPoints < player.getPoints() && player.getBetType()!= BetType.NO_BET)
 				{
 					highestPoints = player.getPoints();
 					winner = player.getPlayerId();
 				}
 			}
 		}
-		String displayWinner = "<html><br/>" + playersDisplay + "The winner is " + 
-		winner + " with " + String.valueOf(highestPoints) + " points!<br/></html>";
-		displayUpdates.setText(displayWinner);
-		this.repaint();
-		this.revalidate();
-		System.out.println(displayWinner);
+		
+		if(!winner.isEmpty())
+		{
+			//use the playersInfo from updatePanel() and output the winner; html used for formatting
+			String displayWinner = "<html><br/>" + playersInfo + "The winner is " + 
+			winner + " with " + String.valueOf(highestPoints) + " points!<br/></html>";
+			displayUpdates.setText(displayWinner);
+			this.repaint();
+			this.revalidate();
+			JOptionPane.showMessageDialog(mainFrame,
+			        "Thanks for playing!", "Round finished",
+			        JOptionPane.INFORMATION_MESSAGE);
+		}
+
 	}
 	
 	public void updatePlayerCount(int count)

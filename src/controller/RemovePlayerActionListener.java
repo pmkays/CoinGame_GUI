@@ -26,9 +26,9 @@ public class RemovePlayerActionListener implements ActionListener
 	public void actionPerformed(ActionEvent e) 
 	{
 		String id = (String) toolbar.getPlayersCombo().getSelectedItem();
-		if(toolbar.getToolbarListener() != null)
+		if(toolbar.getToolbarViewModel() != null)
 		{
-			toolbar.getToolbarListener().removePlayerEventOccurred(id);
+			toolbar.getToolbarViewModel().removePlayerEventOccurred(id);
 		}
 	}
 	

@@ -2,14 +2,14 @@ package view;
 
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import controller.CoinPanelComponentListener;
 import model.enumeration.CoinFace;
 
-public class CoinPanel extends JPanel implements ComponentListener
+public class CoinPanel extends JPanel 
 {
 	private ImageIcon heads = new ImageIcon("heads.png");
 	private ImageIcon tails = new ImageIcon("tails.png");
@@ -20,7 +20,7 @@ public class CoinPanel extends JPanel implements ComponentListener
 	private Image newHeadsImage;
 	private Image newTailsImage;
 	
-	//jlabels getting added on
+	//jlabels getting added on coinPanel
 	private JLabel face1;
 	private JLabel face2;
 	
@@ -28,26 +28,30 @@ public class CoinPanel extends JPanel implements ComponentListener
 	private ImageIcon tailsIcon;
 	private ImageIcon headsIcon;
 	
-	private MainFrame mainFrame;
+	
 	
 	public CoinPanel(Toolbar toolbar, MainFrame mainFrame)
 	{
-		this.mainFrame = mainFrame;
-		this.addComponentListener(this);
+		CoinPanelComponentListener coinPanelComponentListener = new CoinPanelComponentListener(this);
+		this.addComponentListener(coinPanelComponentListener);
 		
+		//keeps track whether at least one player has spun or not
 		haveSpun = false;
 		
+		//starts initial size of the coins in the coinpanel
 		Image headsImage = heads.getImage(); 
 		newHeadsImage = headsImage.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH);  
 		
 		Image tailsImage = tails.getImage();
 		newTailsImage = tailsImage.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH); 
 		
+		//convert to imageicon so can be put into JLabels
 		heads = new ImageIcon(newHeadsImage);
 		tails = new ImageIcon(newTailsImage);
 		face1 = new JLabel(heads);
 		face2 = new JLabel(tails);
 		
+		//border set up
 		Border innerBorder = BorderFactory.createTitledBorder("Coin Panel");
 		Border outerBorder = BorderFactory.createEmptyBorder(5,5,5,5);
 		setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
@@ -79,7 +83,6 @@ public class CoinPanel extends JPanel implements ComponentListener
 	{
 		face2.setIcon(tailsIcon);
 		this.clearDisplayface2();
-		
 	}
 	
 	private void clearDisplayface1()
@@ -117,7 +120,7 @@ public class CoinPanel extends JPanel implements ComponentListener
 		}	
 	}
 	
-	private void scaleImage(int width, int height)
+	public void scaleImage(int width, int height)
 	{
 		//the panel's width is divided to fit two coin panels
 		int newWidth = width/2;
@@ -146,31 +149,6 @@ public class CoinPanel extends JPanel implements ComponentListener
 	    	face1.setIcon(headsIcon);
 	    	face2.setIcon(tailsIcon);
 	    }
-	}
-	
-
-	@Override
-	public void componentResized(ComponentEvent arg0) 
-	{
-		scaleImage(this.getWidth(), this.getHeight());
-	}
-
-	@Override
-	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void componentShown(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

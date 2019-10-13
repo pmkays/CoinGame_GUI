@@ -19,6 +19,8 @@ public class PlaceBetButtonActionListener implements ActionListener
 	public void actionPerformed(ActionEvent e) 
 	{
 		PlaceBetPanelListener placeBetPanelListener = placeBetPanel.getPlaceBetListener(); 
+		
+		//retrieve the values from Jtextfield and combobox
 		String id = (String) placeBetPanel.getToolbar().getPlayersCombo().getSelectedItem();
 		int bet = Integer.parseInt(placeBetPanel.getBetField().getText());
 		String betType = (String) placeBetPanel.getBetTypeCombo().getSelectedItem();

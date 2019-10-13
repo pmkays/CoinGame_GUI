@@ -18,9 +18,9 @@ public class RemoveBetActionListener implements ActionListener
 	public void actionPerformed(ActionEvent e) 
 	{
 		String id = (String) toolbar.getPlayersCombo().getSelectedItem();
-		if(toolbar.getToolbarListener() != null)
+		if(toolbar.getToolbarViewModel() != null)
 		{
-			toolbar.getToolbarListener().removeBetEventOccurred(id);;
+			toolbar.getToolbarViewModel().removeBetEventOccurred(id);;
 		}
 	}
 
