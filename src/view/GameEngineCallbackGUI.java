@@ -83,20 +83,22 @@ public class GameEngineCallbackGUI implements GameEngineCallback
 	
 	private void coinFlip(Coin coin)
 	{
+		int coin1Number = 1;
+		int coin2Number = 2;
 		//decides what face to set for each coin
-		if(coin.getFace() == CoinFace.HEADS && coin.getNumber() == 1)
+		if(coin.getFace() == CoinFace.HEADS && coin.getNumber() == coin1Number)
 		{
 			coinPanel.setFace1Heads();
 		}
-		else if (coin.getFace() == CoinFace.TAILS && coin.getNumber() == 1)
+		else if (coin.getFace() == CoinFace.TAILS && coin.getNumber() == coin1Number)
 		{
 			coinPanel.setFace1Tails();
 		}			
-		else if(coin.getFace() == CoinFace.HEADS && coin.getNumber() == 2)
+		else if(coin.getFace() == CoinFace.HEADS && coin.getNumber() == coin2Number)
 		{
 			coinPanel.setFace2Heads();
 		}
-		else if (coin.getFace() == CoinFace.TAILS && coin.getNumber() == 2)
+		else if (coin.getFace() == CoinFace.TAILS && coin.getNumber() == coin2Number)
 		{
 			coinPanel.setFace2Tails();
 		}

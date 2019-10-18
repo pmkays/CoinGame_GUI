@@ -20,7 +20,7 @@ public class SpinActionListener implements ActionListener
 		String id = (String) toolbar.getPlayersCombo().getSelectedItem();
 		if(toolbar.getToolbarViewModel() != null)
 		{
-			toolbar.getToolbarViewModel().spinPlayerEventOccurred(id);;
+			toolbar.getToolbarViewModel().spinPlayerEventOccurred(id);
 		}
 	}
 

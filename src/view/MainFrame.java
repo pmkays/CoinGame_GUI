@@ -51,7 +51,7 @@ public class MainFrame extends JFrame
 		
 		//add listeners/view model
 		ToolbarViewModel toolbarViewModel = new ToolbarViewModel(toolbar, gameEngine, summaryPanel, MainFrame.this);
-		toolbar.setToolbarListener(toolbarViewModel);
+		toolbar.setToolbarViewModel(toolbarViewModel);
 		AddPlayerPanelListener addPlayerListener = new AddPlayerPanelListener(gameEngine, MainFrame.this, summaryPanel, toolbar);
 		addPlayerPanel.setAddPlayerListener(addPlayerListener);
 		PlaceBetPanelListener placeBetPanelListener = new PlaceBetPanelListener(gameEngine, MainFrame.this, summaryPanel);

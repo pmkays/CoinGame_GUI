@@ -123,22 +123,22 @@ public class CoinPanel extends JPanel
 	public void scaleImage(int width, int height)
 	{
 		//the panel's width is divided to fit two coin panels
-		int newWidth = width/2;
+		int halfWidth = width/2;
 		
 		//use the images that have a minimum size already displayed
 	    Image heads = newHeadsImage;
 	    Image tails = newTailsImage; 
 
 	    //if the panel is expanded horizontally (i.e. panel's width is getting larger)
-	    if(newWidth >= height)
+	    if(halfWidth >= height)
 	    {
 	        heads = newHeadsImage.getScaledInstance(height, height, Image.SCALE_SMOOTH);
 	        tails = newTailsImage.getScaledInstance(height, height, Image.SCALE_SMOOTH);
 	    }
 	    else
 	    {
-	    	heads = newHeadsImage.getScaledInstance(newWidth, newWidth, Image.SCALE_SMOOTH);
-		    tails = newTailsImage.getScaledInstance(newWidth, newWidth, Image.SCALE_SMOOTH);
+	    	heads = newHeadsImage.getScaledInstance(halfWidth, halfWidth, Image.SCALE_SMOOTH);
+		    tails = newTailsImage.getScaledInstance(halfWidth, halfWidth, Image.SCALE_SMOOTH);
 	    }
 	    headsIcon = new ImageIcon(heads);
 	    tailsIcon = new ImageIcon(tails);

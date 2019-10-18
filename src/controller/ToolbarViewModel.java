@@ -20,7 +20,7 @@ public class ToolbarViewModel
 	private SummaryPanel summaryPanel;
 	private Collection<Player> players;
 	private Collection<Player> spunPlayers; 
-	Player spinPlayer = null;
+	Player spinPlayer;
 	
 	public ToolbarViewModel(Toolbar toolbar, GameEngine gameEngine, SummaryPanel summaryPanel, MainFrame mainFrame)
 	{
@@ -78,10 +78,11 @@ public class ToolbarViewModel
 			@Override
 			public void run()
 			{
+				int zeroBet = 0;
 				spinPlayer = gameEngine.getPlayer(id);
 				
 				if(!(spinPlayer.getBetType() == BetType.NO_BET) 
-						&& spinPlayer.getBet() > 0 && !(hasSpunBefore(spinPlayer)))
+						&& spinPlayer.getBet() > zeroBet && !(hasSpunBefore(spinPlayer)))
 				{
 					//initial coinPanel setup for spinning
 					setUpCoinPanel();
@@ -94,6 +95,7 @@ public class ToolbarViewModel
 					
 					spunPlayers.add(spinPlayer);
 					checkSpinSpinnerButton();
+					spinPlayer = null;
 					
 					//update summary panel after each spin
 					summaryPanel.updatePanel();
@@ -106,6 +108,7 @@ public class ToolbarViewModel
 					        "Player: " 
 					+ spinPlayer.getPlayerId() + "has already spun!", "Unable to spin",
 					        JOptionPane.ERROR_MESSAGE);
+					spinPlayer = null;
 				}
 				else
 				{
@@ -113,6 +116,7 @@ public class ToolbarViewModel
 					        "Please ensure that a bet has been placed for player: " 
 					+ spinPlayer.getPlayerId(), "Unable to spin",
 					        JOptionPane.ERROR_MESSAGE);
+					spinPlayer = null;
 				}
 			}
 		}.start();
@@ -165,11 +169,12 @@ public class ToolbarViewModel
 	private void zeroPoints()
 	{
 		Player toDelete = null;
+		int zeroPoints = 0; 
 		
 		//keeps count of players and finds player to delete
 		for(Player player : players)
 		{
-			if(player.getPoints() <=  0)
+			if(player.getPoints() <=  zeroPoints)
 			{
 				toDelete = player;
 			}
@@ -190,10 +195,12 @@ public class ToolbarViewModel
 	private void checkSpinSpinnerButton()
 	{
 		boolean spinnerCanSpin = true;
+		int zeroBet = 0; 
 		for(Player playerToCheck: players)
 		{
 			//if everyone has either made a bet BUT they have no results (haven't spun) && they placed some sort of betType
-			if(playerToCheck.getBet() > 0 && playerToCheck.getResult()== null && playerToCheck.getBetType() != BetType.NO_BET)
+			if(playerToCheck.getBet() > zeroBet && playerToCheck.getResult()== null && 
+					playerToCheck.getBetType() != BetType.NO_BET)
 			{
 				spinnerCanSpin = false;
 			}
@@ -213,8 +220,7 @@ public class ToolbarViewModel
 		//i.e. if ALL the players have spun/cancelled a bet
 		if(spunPlayersAmount == amountOfPlayers)
 		{
-			spinSpinnerEventOccurred();
-			
+			spinSpinnerEventOccurred();		
 		}
 	}
 
@@ -224,7 +230,11 @@ public class ToolbarViewModel
 		CoinFace face2 = null;
 		for(Player player : players)
 		{
-			if(player.getPlayerId().equals(id) && player.getResult() != null)
+			if(spinPlayer != null && spinPlayer.getPlayerId().equals(id))
+			{
+				setUpCoinPanel(); 
+			}
+			else if(player.getPlayerId().equals(id) && player.getResult() != null)
 			{
 				//finds the face from the results of each coin flip
 				face1 = player.getResult().getCoin1().getFace();

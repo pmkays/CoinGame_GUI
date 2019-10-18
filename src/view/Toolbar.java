@@ -54,9 +54,9 @@ public class Toolbar extends JPanel
 		add(playersCombo);
 	}
 	
-	public void setToolbarListener(ToolbarViewModel listener)
+	public void setToolbarViewModel(ToolbarViewModel viewModel)
 	{
-		this.toolbarViewModel = listener;
+		this.toolbarViewModel = viewModel;
 	}
 	
 
